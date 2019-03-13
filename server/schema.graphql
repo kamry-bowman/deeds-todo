@@ -1,0 +1,17 @@
+type Query {
+  todos: [Todo!]!
+  post(id: ID!): Todo
+}
+
+type Mutation {
+  createTodo(title: String!, description: String): Todo
+  deleteTodo(id: ID!): Todo
+  toggleTodo(id: ID!): Todo
+}
+
+type Todo {
+  id: ID!
+  title: String!
+  description: String
+  complete: Boolean
+}
