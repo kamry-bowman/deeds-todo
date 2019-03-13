@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma:deploy": "cd server/database && prisma deploy --env-file ../../.env"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,11 @@
   },
   "homepage": "https://github.com/kamry-bowman/deeds-todo#readme",
   "dependencies": {
-    "graphql-yoga": "^1.17.4"
+    "graphql-yoga": "^1.17.4",
+    "prisma-binding": "^2.3.6"
   },
   "devDependencies": {
+    "dotenv": "^6.2.0",
     "nodemon": "^1.18.10"
   }
 }
