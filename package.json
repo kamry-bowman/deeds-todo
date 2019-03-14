@@ -21,9 +21,9 @@
   },
   "homepage": "https://github.com/kamry-bowman/deeds-todo#readme",
   "dependencies": {
-    "axios": "^0.18.0",
     "graphql-yoga": "^1.17.4",
-    "node-cache": "^4.2.0",
+    "jsonwebtoken": "^8.5.0",
+    "jwks-rsa": "^1.4.0",
     "prisma-binding": "^2.3.6"
   },
   "devDependencies": {

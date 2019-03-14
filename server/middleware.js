@@ -1,5 +1,5 @@
-const axios = require('axios');
-const NodeCache = require('node-cache');
+const jwksClient = require('jwks-rsa');
+const jwt = require('jsonwebtoken');
 
 module.exports = function() {
   const {
@@ -7,36 +7,29 @@ module.exports = function() {
     COGNITO_REGION: region,
   } = process.env;
 
-  const cache = new NodeCache({ stdTTL: 10000, checkperiod: 1000 });
+  console.log('line 9', region);
 
-  async function updateJwks() {
-    try {
-      console.log('server hit');
-      const { data } = await axios.get(
-        `https://cognito-idp.${region}.amazonaws.com/${userPoolId}/.well-known/jwks.json`
-      );
-      if (data) {
-        cache.set('jwks', data);
-        return data;
-      }
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
+  const client = jwksClient({
+    cache: true,
+    jwksUri: `https://cognito-idp.${region}.amazonaws.com/${userPoolId}/.well-known/jwks.json`,
+  });
+
+  function getKey(header, callback) {
+    client.getSigningKey(header.kid, function(err, key) {
+      var signingKey = key.publicKey || key.rsaPublicKey;
+      callback(null, signingKey);
+    });
   }
 
-  updateJwks();
-
-  const authenticate = async (resolve, root, args, ctx, info) => {
-    let jwks;
-    try {
-      jwks = cache.get('jwks');
-      console.log(jwks);
-    } catch (err) {
-      jwks = await updateJwks();
+  return async function authenticate(req, res, next) {
+    console.log(req.headers);
+    const { authorization } = req.headers;
+    if (authorization) {
+      jwt.verify(authorization, getKey, {}, function(err, decoded) {
+        console.log(decoded);
+        req.user = decoded;
+        return next();
+      });
     }
-    return resolve(root, args, ctx, info);
   };
-
-  return [authenticate];
 };
