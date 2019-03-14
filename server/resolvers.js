@@ -1,6 +1,7 @@
 module.exports = {
   Query: {
-    todos(parent, args, ctx, info) {
+    todos(parent, { userId }, ctx, info) {
+      // console.log(ctx.request.user);
       return ctx.db.query.todoes({}, info);
     },
     todo(parent, args, ctx, info) {
@@ -8,11 +9,22 @@ module.exports = {
     },
   },
   Mutation: {
-    createTodo(parent, { title, description }, ctx, info) {
+    createUser(parent, { name, id }, ctx, info) {
+      return ctx.db.mutation.createUser({
+        data: {
+          name,
+          id,
+        },
+      });
+    },
+    createTodo(parent, { title, description, userId }, ctx, info) {
       return ctx.db.mutation.createTodo({
         data: {
           title,
           description,
+          user: {
+            id: userId,
+          },
         },
       });
     },

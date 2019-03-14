@@ -1,5 +1,5 @@
 # source: https://deeds-todo-d1a0212b96.herokuapp.com/database/production
-# timestamp: Tue Mar 12 2019 23:56:43 GMT-0600 (Mountain Daylight Time)
+# timestamp: Thu Mar 14 2019 15:19:41 GMT-0600 (Mountain Daylight Time)
 
 type AggregateTodo {
   count: Int!
@@ -21,18 +21,18 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
   createTodo(data: TodoCreateInput!): Todo!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  createUser(data: UserCreateInput!): User!
   updateTodo(data: TodoUpdateInput!, where: TodoWhereUniqueInput!): Todo
-  deleteUser(where: UserWhereUniqueInput!): User
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteTodo(where: TodoWhereUniqueInput!): Todo
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
   upsertTodo(where: TodoWhereUniqueInput!, create: TodoCreateInput!, update: TodoUpdateInput!): Todo!
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyTodoes(data: TodoUpdateManyMutationInput!, where: TodoWhereInput): BatchPayload!
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   deleteManyTodoes(where: TodoWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -63,12 +63,12 @@ type PageInfo {
 }
 
 type Query {
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   todoes(where: TodoWhereInput, orderBy: TodoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Todo]!
-  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   todo(where: TodoWhereUniqueInput!): Todo
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  user(where: UserWhereUniqueInput!): User
   todoesConnection(where: TodoWhereInput, orderBy: TodoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TodoConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -78,8 +78,8 @@ type Query {
 }
 
 type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   todo(where: TodoSubscriptionWhereInput): TodoSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type Todo implements Node {
@@ -87,6 +87,7 @@ type Todo implements Node {
   title: String!
   description: String!
   completed: Boolean!
+  user: User!
 }
 
 """A connection to a list of items."""
@@ -103,6 +104,7 @@ input TodoCreateInput {
   title: String!
   description: String!
   completed: Boolean
+  user: UserCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -179,6 +181,7 @@ input TodoUpdateInput {
   title: String
   description: String
   completed: Boolean
+  user: UserUpdateOneRequiredInput
 }
 
 input TodoUpdateManyMutationInput {
@@ -320,6 +323,7 @@ input TodoWhereInput {
 
   """All values that are not equal to given value."""
   completed_not: Boolean
+  user: UserWhereInput
 }
 
 input TodoWhereUniqueInput {
@@ -343,6 +347,11 @@ type UserConnection {
 
 input UserCreateInput {
   name: String!
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -409,12 +418,28 @@ input UserSubscriptionWhereInput {
   node: UserWhereInput
 }
 
+input UserUpdateDataInput {
+  name: String
+}
+
 input UserUpdateInput {
   name: String
 }
 
 input UserUpdateManyMutationInput {
   name: String
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {

@@ -1,7 +1,7 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
 const resolvers = require('./resolvers');
-const bindAuth = require('./middleware');
+const { bindAuth, permissions } = require('./middleware');
 require('dotenv').config();
 
 const {
@@ -12,6 +12,7 @@ const {
 const server = new GraphQLServer({
   typeDefs: './server/database/schema.graphql',
   resolvers,
+  middlewares: permissions,
   context: req => ({
     ...req,
     db: new Prisma({

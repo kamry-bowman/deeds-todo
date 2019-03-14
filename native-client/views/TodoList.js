@@ -19,8 +19,9 @@ export default class TodoList extends React.Component {
           }
         `}
       >
-        {({ loading, error, data }) => (
+        {({ loading, error, data, refetch }) => (
           <View style={styles.container}>
+            <Button title="Refetch" onPress={() => refetch()} />
             <Text>TodoList</Text>
             <AddTodo />
             <Button
