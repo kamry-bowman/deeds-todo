@@ -4,21 +4,22 @@ import AddTodo from '../components/AddTodo';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+const userTodos = gql`
+  query userTodos($username: String!) {
+    username @client @export(as: "username")
+    todos(username: $username) {
+      title
+      description
+      id
+      completed
+    }
+  }
+`;
+
 export default class TodoList extends React.Component {
   render() {
     return (
-      <Query
-        query={gql`
-          query {
-            todos {
-              title
-              id
-              description
-              completed
-            }
-          }
-        `}
-      >
+      <Query query={userTodos}>
         {({ loading, error, data, refetch }) => (
           <View style={styles.container}>
             <Button title="Refetch" onPress={() => refetch()} />

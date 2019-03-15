@@ -1,10 +1,10 @@
 {
+  "webpackServerPort": null,
+  "expoServerNgrokUrl": "https://44-z2x.kamdugle.native-client.exp.direct",
+  "packagerNgrokUrl": "https://packager.44-z2x.kamdugle.native-client.exp.direct",
+  "ngrokPid": 15112,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": "https://44-z2x.anonymous.native-client.exp.direct",
-  "packagerNgrokUrl": "https://packager.44-z2x.anonymous.native-client.exp.direct",
-  "ngrokPid": 7828,
-  "webpackServerPort": null
+  "packagerPort": 19001,
+  "packagerPid": 9708
 }

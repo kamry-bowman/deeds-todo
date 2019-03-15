@@ -37,27 +37,31 @@ function bindAuth() {
   };
 }
 
-const isAuthenticated = rule()(async (parent, args, ctx, info) => {
-  console.log('args', args);
+const isAuthorized = rule()(async (parent, { username, id }, ctx, info) => {
+  console.log(username);
+  console.log(ctx.request.user);
+
+  // logic for searches based on username
+  // if (username && username !== ctx.request.user.id) {
+  //   return false;
+  // }
+
+  // logic for searches for todos
+  ctx.db.exists
+    .Todo({ id, user: { username: ctx.request.user } })
+    .then(console.log);
+
   return true;
 });
 
-// const isAdmin = rule()(async (parent, args, ctx, info) => {
-//   return ctx.user.role === 'admin'
-// })
-
-// const isEditor = rule()(async (parent, args, ctx, info) => {
-//   return ctx.user.role === 'editor'
-// })
-
-// Permissions
-
 const permissions = shield({
   Query: {
-    todos: isAuthenticated,
-    todo: isAuthenticated,
+    todos: isAuthorized,
+    todo: isAuthorized,
   },
-  Mutation: isAuthenticated,
+  Mutation: {
+    createTodo: isAuthorized,
+  },
 });
 
 module.exports = { bindAuth, permissions };

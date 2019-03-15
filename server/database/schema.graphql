@@ -1,23 +1,44 @@
-# import Todo from "./generated/prisma.graphql"
-# import User from "./generated/prisma.graphql"
-
-type Query {
-  todos: [Todo!]!
-  todo(id: ID!): Todo
-  user(id: ID!): User
-}
+# source: http://localhost:4000
+# timestamp: Thu Mar 14 2019 16:42:05 GMT-0600 (Mountain Daylight Time)
 
 type Mutation {
-  createUser(name: String!, id: ID!): User
-  # deleteUser(name: String): User
-  # updateUser(name: String): User
-  createTodo(title: String!, description: String, userId: ID!): Todo
+  createUser(username: String!): User
+  createTodo(title: String!, description: String, username: String): Todo
   deleteTodo(id: ID!): Todo
   updateTodo(
     id: ID!
     completed: Boolean
     description: String
     title: String
-    userId: ID
   ): Todo
+}
+
+"""
+An object with an ID
+"""
+interface Node {
+  """
+  The id of the object.
+  """
+  id: ID!
+}
+
+type Query {
+  todos(username: String!): [Todo!]!
+  todo(id: ID!): Todo
+  user(id: ID, username: String): User
+  users: [User!]!
+}
+
+type Todo implements Node {
+  id: ID!
+  title: String!
+  description: String!
+  completed: Boolean!
+  user: User!
+}
+
+type User implements Node {
+  id: ID!
+  username: String!
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import Amplify, { API } from 'aws-amplify';
 import MainNavigator from './components/MainNavigator';
 import { ApolloClient, HttpLink, ApolloLink, concat } from 'apollo-boost';
@@ -36,14 +36,59 @@ class App extends React.Component {
           authorization: props.authData.signInUserSession.accessToken.jwtToken,
         },
       }));
-
       return forward(operation);
     });
+    const cache = new InMemoryCache();
 
     this.client = new ApolloClient({
-      cache: new InMemoryCache(),
+      cache,
       link: concat(authMiddleware, link),
+      resolvers: {
+        Query: {
+          username: (root, args, { cache }) => {
+            console.log('arg2', arg2);
+            try {
+              cache.readQuery(gql`
+                query {
+                  username
+                }
+              `);
+            } catch (err) {
+              console.log(err);
+            }
+          },
+        },
+      },
     });
+
+    cache.writeData({
+      data: {
+        username: props.authData.username,
+      },
+    });
+  }
+
+  componentDidMount() {
+    this.createUserIfNeeded();
+  }
+
+  async createUserIfNeeded() {
+    try {
+      const { data } = await this.client.mutate({
+        mutation: gql`
+          mutation {
+            createUser(username: "${this.props.authData.username}") {
+              username
+            }
+          }
+        `,
+      });
+      console.log('created', data);
+    } catch (err) {
+      // this catches an error, which will occur in all cases except when
+      // the user is a new user to the database, in which case the new user
+      // gets created. This avoids a second server request.
+    }
   }
 
   render() {
