@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import AddTodo from '../components/AddTodo';
+import Header from '../components/Header';
+import { AppContext } from '../App';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -18,11 +20,13 @@ const userTodos = gql`
 
 export default class TodoList extends React.Component {
   render() {
-    console.log(this.props.signOut);
     return (
       <Query query={userTodos}>
         {({ loading, error, data, refetch }) => (
           <View style={styles.container}>
+            <AppContext>
+              {({ signOut }) => <Header signOut={signOut} />}
+            </AppContext>
             <Button title="Refetch" onPress={() => refetch()} />
             <Text>TodoList</Text>
             <AddTodo />

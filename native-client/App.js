@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
-import Amplify, { API } from 'aws-amplify';
+import Amplify, { API, Auth } from 'aws-amplify';
 import MainNavigator from './components/MainNavigator';
 import Header from './components/Header';
 import { ApolloClient, HttpLink, ApolloLink, concat } from 'apollo-boost';
@@ -24,6 +24,8 @@ Amplify.configure({
     userPoolWebClientId,
   },
 });
+
+const AppContext = React.createContext({ signOut: () => {} });
 
 class App extends React.Component {
   constructor(props) {
@@ -105,7 +107,9 @@ class App extends React.Component {
   render() {
     return (
       <ApolloProvider client={this.client}>
-        <MainNavigator  />
+        <AppContext.Provider value={{ signOut: this.signOut }}>
+          <MainNavigator screenProps={this.signOut} />
+        </AppContext.Provider>
       </ApolloProvider>
     );
   }
@@ -120,9 +124,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withAuthenticator(App, {
+const WrappedApp = withAuthenticator(App, {
   signUpConfig: {
     header: 'Signup for Deeds',
     hiddenDefaults: ['phone_number'],
   },
 });
+export { WrappedApp as default, AppContext };

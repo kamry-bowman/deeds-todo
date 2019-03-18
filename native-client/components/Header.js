@@ -8,7 +8,7 @@ export default class Header extends React.Component {
     // const signedIn = (authState === 'signedIn')
     return (
       <View>
-        <Button title="Sign Out brother" onPress={this.signOut} />
+        <Button title="Sign Out brother" onPress={this.props.signOut} />
       </View>
     );
   }
