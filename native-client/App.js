@@ -50,15 +50,15 @@ class App extends React.Component {
         Query: {
           username: (root, args, { cache }) => {
             const query = gql`
-              {
+              query {
                 username
               }
             `;
             console.log(query);
             try {
-              cache.readQuery(query);
+              cache.readQuery({ query });
             } catch (err) {
-              console.log(err);
+              console.log('query error', err);
             }
           },
         },
