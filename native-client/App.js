@@ -105,7 +105,7 @@ class App extends React.Component {
   render() {
     return (
       <ApolloProvider client={this.client}>
-        <MainNavigator signOut={this.signOut} />
+        <MainNavigator  />
       </ApolloProvider>
     );
   }
