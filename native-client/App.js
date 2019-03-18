@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import Amplify, { API } from 'aws-amplify';
 import MainNavigator from './components/MainNavigator';
+import Header from './components/Header';
 import { ApolloClient, HttpLink, ApolloLink, concat } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -46,13 +47,14 @@ class App extends React.Component {
       resolvers: {
         Query: {
           username: (root, args, { cache }) => {
-            console.log('arg2', arg2);
+            const query = gql`
+              {
+                username
+              }
+            `;
+            console.log(query);
             try {
-              cache.readQuery(gql`
-                query {
-                  username
-                }
-              `);
+              cache.readQuery(query);
             } catch (err) {
               console.log(err);
             }
@@ -91,10 +93,19 @@ class App extends React.Component {
     }
   }
 
+  signOut = () => {
+    Auth.signOut()
+      .then(res => {
+        console.log(res);
+        this.props.onStateChange('signedOut');
+      })
+      .catch(err => console.log(err));
+  };
+
   render() {
     return (
       <ApolloProvider client={this.client}>
-        <MainNavigator />
+        <MainNavigator signOut={this.signOut} />
       </ApolloProvider>
     );
   }
@@ -110,7 +121,6 @@ const styles = StyleSheet.create({
 });
 
 export default withAuthenticator(App, {
-  includeGreetings: true,
   signUpConfig: {
     header: 'Signup for Deeds',
     hiddenDefaults: ['phone_number'],
