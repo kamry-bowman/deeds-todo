@@ -1,9 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-import Amplify, { API, Auth } from 'aws-amplify';
+import Amplify, { Auth } from 'aws-amplify';
 import MainNavigator from './components/MainNavigator';
 import AddApollo from './components/AddApollo';
-
 import { withAuthenticator } from 'aws-amplify-react-native';
 import { userPoolId, region, userPoolWebClientId } from 'react-native-dotenv';
 
@@ -36,15 +34,6 @@ function App(props) {
     </AddApollo>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 const WrappedApp = withAuthenticator(App, {
   signUpConfig: {
