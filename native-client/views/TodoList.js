@@ -11,9 +11,9 @@ export default class TodoList extends React.Component {
       <Query query={USER_TODOS}>
         {({ loading, error, data, refetch }) => (
           <MainLayout>
+            <AddTodo />
             <Button title="Refetch" onPress={() => refetch()} />
             <Text>TodoList</Text>
-            <AddTodo />
             <Button
               title="Single Todo"
               onPress={() => this.props.navigation.navigate('SingleTodo')}

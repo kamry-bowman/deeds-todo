@@ -1,7 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableHighlight,
+  TextInput,
+  Alert,
+} from 'react-native';
 import { Mutation } from 'react-apollo';
-import { ADD_TODO, USER_TODOS, USERNAME, TODOS } from '../gql';
+import { Ionicons } from '@expo/vector-icons';
+import { ADD_TODO, TODOS } from '../gql';
+import theme from '../theme';
 
 const initialState = {
   title: '',
@@ -49,13 +59,21 @@ export default class TodoList extends React.Component {
               .catch(err => console.log(err));
           };
           return (
-            <React.Fragment>
+            <View style={styles.container}>
+              <TouchableHighlight onPress={handleSubmit}>
+                <Ionicons
+                  style={styles.addButton}
+                  name="md-add-circle"
+                  size={50}
+                  color={theme.colors.mainDk}
+                />
+              </TouchableHighlight>
               <TextInput
+                style={styles.input}
                 value={this.state.title}
                 onChangeText={title => this.setState({ title })}
               />
-              <Button title="Todo List" onPress={handleSubmit} />
-            </React.Fragment>
+            </View>
           );
         }}
       </Mutation>
@@ -64,5 +82,24 @@ export default class TodoList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flexDirection: 'row',
+    alignContent: 'flex-start',
+    padding: theme.padding.outer,
+  },
+  addButton: {
+    width: 60,
+    height: 50,
+    paddingRight: 10,
+  },
+  input: {
+    flex: 1,
+    borderBottomWidth: 4,
+    borderBottomColor: theme.colors.mainDkTrans,
+    marginRight: 10,
+    color: theme.colors.mainDkOpaque,
+    fontFamily: 'nunito700',
+    fontSize: 25,
+    textAlign: 'center',
+  },
 });
