@@ -1,4 +1,5 @@
 import React from 'react';
+import { Font, AppLoading } from 'expo';
 import Amplify, { Auth } from 'aws-amplify';
 import MainNavigator from './components/MainNavigator';
 import AddApollo from './components/AddApollo';
@@ -17,22 +18,40 @@ Amplify.configure({
 
 const AppContext = React.createContext({ signOut: () => {} });
 
-function App(props) {
-  const signOut = () => {
+class App extends React.Component {
+  state = {
+    assetsLoaded: false,
+  };
+
+  signOut = () => {
     Auth.signOut()
       .then(res => {
-        props.onStateChange('signedOut');
+        this.props.onStateChange('signedOut');
       })
       .catch(err => console.log(err));
   };
 
-  return (
-    <AddApollo authData={props.authData}>
-      <AppContext.Provider value={{ signOut: signOut }}>
-        <MainNavigator />
-      </AppContext.Provider>
-    </AddApollo>
-  );
+  componentDidMount() {
+    Font.loadAsync({
+      nunito900: require('./assets/fonts/Nunito-Black.ttf'),
+      nunito700: require('./assets/fonts/Nunito-SemiBold.ttf'),
+      nunito600: require('./assets/fonts/Nunito-Bold.ttf'),
+    })
+      .then(() => this.setState({ assetsLoaded: true }))
+      .catch(console.log);
+  }
+
+  render() {
+    return this.state.assetsLoaded ? (
+      <AddApollo authData={this.props.authData}>
+        <AppContext.Provider value={{ signOut: this.signOut }}>
+          <MainNavigator />
+        </AppContext.Provider>
+      </AddApollo>
+    ) : (
+      <AppLoading />
+    );
+  }
 }
 
 const WrappedApp = withAuthenticator(App, {
