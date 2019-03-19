@@ -1,27 +1,16 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import AddTodo from '../components/AddTodo';
+import MainLayout from '../components/MainLayout';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-
-const userTodos = gql`
-  query userTodos($username: String!) {
-    username @client @export(as: "username")
-    todos(username: $username) {
-      title
-      description
-      id
-      completed
-    }
-  }
-`;
+import { USER_TODOS } from '../gql';
 
 export default class TodoList extends React.Component {
   render() {
     return (
-      <Query query={userTodos}>
+      <Query query={USER_TODOS}>
         {({ loading, error, data, refetch }) => (
-          <View style={styles.container}>
+          <MainLayout>
             <Button title="Refetch" onPress={() => refetch()} />
             <Text>TodoList</Text>
             <AddTodo />
@@ -40,7 +29,7 @@ export default class TodoList extends React.Component {
                 </Text>
               ))
             )}
-          </View>
+          </MainLayout>
         )}
       </Query>
     );

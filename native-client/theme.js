@@ -1,5 +1,7 @@
 export default {
   colors: {
-    bgColor: '#FCFF4B',
+    bg: '#FCFF4B',
+    mainLt: '#7CAFC4',
+    mainDk: '#044389',
   },
 };

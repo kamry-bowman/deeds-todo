@@ -47,9 +47,9 @@ const isAuthorized = rule()(async (parent, { username, id }, ctx, info) => {
   // }
 
   // logic for searches for todos
-  ctx.db.exists
-    .Todo({ id, user: { username: ctx.request.user } })
-    .then(console.log);
+  // ctx.db.exists
+  //   .Todo({ id, user: { username: ctx.request.user } })
+  //   .then(console.log);
 
   return true;
 });

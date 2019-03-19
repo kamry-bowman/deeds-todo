@@ -4,13 +4,13 @@ module.exports = {
       return ctx.db.query.todoes({}, info);
     },
     todo(parent, args, ctx, info) {
-      return ctx.db.query.todoes({ where: { id: args.id } }, info);
+      return ctx.db.query.todo({ where: { id: args.id } }, info);
     },
     user(parent, { id, username }, ctx, info) {
       if (id) {
         return ctx.db.query.user({ where: { id } }, info);
       } else {
-        return ctx.db.query.user({ where: { username } });
+        return ctx.db.query.user({ where: { username }, info });
       }
     },
     users(parent, {}, ctx, info) {
@@ -28,18 +28,22 @@ module.exports = {
         info
       );
     },
-    createTodo(parent, { title, description, username }, ctx, info) {
-      return ctx.db.mutation.createTodo({
-        data: {
-          title,
-          description,
-          user: {
-            connect: {
-              username,
+    async createTodo(parent, { title, description, username }, ctx, info) {
+      const data = await ctx.db.mutation.createTodo(
+        {
+          data: {
+            title,
+            description,
+            user: {
+              connect: {
+                username: username,
+              },
             },
           },
         },
-      });
+        info
+      );
+      return data;
     },
     deleteTodo(parent, { id }, ctx, info) {
       return ctx.db.mutation.deleteTodo({ where: { id } }, info);

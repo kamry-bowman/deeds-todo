@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import { Platform, StatusBar } from 'react-native';
 import { AppContext } from '../App';
+import theme from '../theme';
 
 export default class Header extends React.Component {
   render() {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     height: 60 + (Platform.OS === 'ios' ? 0 : StatusBar.currentHeight),
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.mainLt,
     alignItems: 'center',
     justifyContent: 'center',
   },
