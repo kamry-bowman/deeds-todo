@@ -12,6 +12,5 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.bg,
     alignItems: 'stretch',
     justifyContent: 'space-between',
-    ...theme.debug,
   },
 });
