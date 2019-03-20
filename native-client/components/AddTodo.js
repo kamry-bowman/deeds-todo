@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TouchableHighlight,
-  TextInput,
-  Alert,
-} from 'react-native';
-import { Mutation } from 'react-apollo';
+import { StyleSheet, View, TouchableHighlight, TextInput } from 'react-native';
+import AddTodoMutation from './AddTodoMutation';
 import { Ionicons } from '@expo/vector-icons';
 import { ADD_TODO, TODOS } from '../gql';
 import theme from '../theme';
@@ -23,29 +15,8 @@ export default class TodoList extends React.Component {
 
   render() {
     return (
-      <Mutation
-        mutation={ADD_TODO}
-        update={(cache, { data: { createTodo } }) => {
-          const {
-            user: { username },
-            ...newTodo
-          } = createTodo;
-          const { todos } = cache.readQuery({
-            query: TODOS,
-            variables: {
-              username,
-            },
-          });
-          cache.writeQuery({
-            query: TODOS,
-            variables: {
-              username,
-            },
-            data: { todos: todos.concat(newTodo) },
-          });
-        }}
-      >
-        {(createTodo, { data }) => {
+      <AddTodoMutation>
+        {createTodo => {
           const handleSubmit = () => {
             createTodo({
               variables: {
@@ -78,7 +49,7 @@ export default class TodoList extends React.Component {
             </View>
           );
         }}
-      </Mutation>
+      </AddTodoMutation>
     );
   }
 }
