@@ -5,6 +5,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Platform,
   DatePickerAndroid,
 } from 'react-native';
@@ -20,15 +21,6 @@ export default class EditTodo extends React.Component {
     description: this.props.todo.description,
     date: this.props.todo.date,
   };
-
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps !== this.props) {
-  //     this.setState({
-  //       title: this.props.todo.title,
-  //       description: this.props.todo.description,
-  //     });
-  //   }
-  // }
 
   updateInputs = ({ name, text }) => {
     this.setState({
@@ -81,6 +73,7 @@ export default class EditTodo extends React.Component {
   render() {
     const { navigation } = this.props;
     const { title, description, date } = this.state;
+
     return (
       <View style={styles.container}>
         <Text style={styles.editMode}>Edit Mode</Text>
@@ -89,7 +82,9 @@ export default class EditTodo extends React.Component {
           value={title}
           onChangeText={text => this.updateInputs({ text, name: 'title' })}
         />
-        <Text style={styles.heading}>{date ? formatDate(date) : ''}</Text>
+        <TouchableWithoutFeedback onPress={this.editDate}>
+          <Text style={styles.date}>{date ? formatDate(date) : '-'}</Text>
+        </TouchableWithoutFeedback>
         <TextInput
           style={styles.bodyText}
           value={description}
@@ -146,6 +141,13 @@ const styles = StyleSheet.create({
     fontFamily: 'nunito700',
     fontSize: 22,
     textAlign: 'center',
+  },
+  date: {
+    fontFamily: 'nunito600',
+    fontSize: 30,
+    color: theme.colors.mainDkOpaque,
+    textAlign: 'center',
+    backgroundColor: theme.colors.lighten,
   },
   heading: {
     fontFamily: 'nunito900',

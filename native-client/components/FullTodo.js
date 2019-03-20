@@ -3,11 +3,13 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import Footer from './Footer';
 import theme from '../theme';
+import { formatDate } from '../utils';
 
 export default function FullTodo({ todo, toggleEdit, navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{todo.title}</Text>
+      <Text style={styles.date}>{todo.date ? formatDate(todo.date) : '-'}</Text>
       {todo.description ? (
         <Text style={styles.bodyText}>{todo.description}</Text>
       ) : (
@@ -50,6 +52,13 @@ const styles = StyleSheet.create({
     color: theme.colors.mainDk,
     textAlign: 'center',
     paddingTop: theme.padding.headerClearance,
+  },
+  date: {
+    fontFamily: 'nunito600',
+    fontSize: 30,
+    color: theme.colors.mainDk,
+    textAlign: 'center',
+    // paddingTop: theme.padding.headerClearance,
   },
   bodyText: {
     paddingLeft: theme.padding.outer,
