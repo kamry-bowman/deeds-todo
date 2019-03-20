@@ -76,7 +76,7 @@ export default function TodoCard({ todo, editTodo, ...rest }) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 110,
+    height: 120,
     paddingLeft: 15,
     paddingRight: 15,
     paddingTop: 18,
@@ -125,6 +125,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     flex: 1,
+    maxHeight: 60,
+    overflow: 'scroll',
   },
   textComplete: {
     color: theme.colors.mainLt,
