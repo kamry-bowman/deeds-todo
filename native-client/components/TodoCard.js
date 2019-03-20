@@ -4,7 +4,7 @@ import {
   Text,
   View,
   Button,
-  TouchableHighlight,
+  TouchableOpacity,
   TextInput,
 } from 'react-native';
 import { Mutation } from 'react-apollo';
@@ -16,27 +16,27 @@ const viewabilityConfig = {
 };
 
 export default function TodoCard({ todo }) {
-  const { title, description } = todo;
+  const { title, complete } = todo;
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <TouchableHighlight onPress={() => {}}>
+        <TouchableOpacity onPress={() => {}}>
           <Ionicons
             style={styles.icon}
-            name="md-add-circle"
+            name="md-checkmark"
             size={50}
             color={theme.colors.mainDk}
           />
-        </TouchableHighlight>
+        </TouchableOpacity>
         <Text style={styles.text}>{title}</Text>
-        <TouchableHighlight onPress={() => {}}>
+        <TouchableOpacity onPress={() => {}}>
           <Ionicons
             style={styles.icon}
-            name="md-add-circle"
+            name="md-more"
             size={50}
             color={theme.colors.mainDk}
           />
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     fontFamily: 'nunito600',
     textAlign: 'center',
     alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10,
     flex: 1,
-    ...theme.debug,
   },
 });
