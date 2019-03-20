@@ -9,6 +9,9 @@ export default {
   padding: {
     outer: 10,
   },
+  border: {
+    radius: 10,
+  },
   debug: {
     borderWidth: 1,
     borderColor: 'red',

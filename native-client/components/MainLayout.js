@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.bg,
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'space-between',
+    ...theme.debug,
   },
 });

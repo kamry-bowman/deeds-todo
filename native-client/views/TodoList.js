@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import theme from '../theme';
 import AddTodo from '../components/AddTodo';
 import MainLayout from '../components/MainLayout';
+import TodoCard from '../components/TodoCard';
 import { Query } from 'react-apollo';
 import { USER_TODOS } from '../gql';
 
@@ -12,22 +14,24 @@ export default class TodoList extends React.Component {
         {({ loading, error, data, refetch }) => (
           <MainLayout>
             <AddTodo />
-            <Button title="Refetch" onPress={() => refetch()} />
-            <Text>TodoList</Text>
-            <Button
+            {/* <Button
               title="Single Todo"
               onPress={() => this.props.navigation.navigate('SingleTodo')}
-            />
+            /> */}
             {error ? (
               <Text>error!</Text>
             ) : loading ? (
               <Text>loading...</Text>
             ) : (
-              data.todos.map(todo => (
-                <Text key={todo.id}>
-                  {`${todo.title} - ${todo.description}`}
-                </Text>
-              ))
+              <FlatList
+                style={styles.list}
+                data={data.todos}
+                renderItem={({ item }) => {
+                  console.log(item.id);
+                  return <TodoCard todo={item} />;
+                }}
+                keyExtractor={item => item.id}
+              />
             )}
           </MainLayout>
         )}
@@ -37,10 +41,5 @@ export default class TodoList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  list: {},
 });

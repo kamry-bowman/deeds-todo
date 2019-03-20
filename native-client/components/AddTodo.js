@@ -69,6 +69,8 @@ export default class TodoList extends React.Component {
                 />
               </TouchableHighlight>
               <TextInput
+                placeholder="Enter a todo..."
+                placeholderTextColor={theme.colors.mainDkTrans}
                 style={styles.input}
                 value={this.state.title}
                 onChangeText={title => this.setState({ title })}
@@ -85,7 +87,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignContent: 'flex-start',
-    padding: theme.padding.outer,
+    marginLeft: theme.padding.outer,
+    marginRight: theme.padding.outer,
+    paddingBottom: 0,
+    borderBottomWidth: 4,
+    borderBottomColor: theme.colors.mainDkTrans,
   },
   addButton: {
     width: 60,
@@ -94,8 +100,6 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    borderBottomWidth: 4,
-    borderBottomColor: theme.colors.mainDkTrans,
     marginRight: 10,
     color: theme.colors.mainDkOpaque,
     fontFamily: 'nunito700',
