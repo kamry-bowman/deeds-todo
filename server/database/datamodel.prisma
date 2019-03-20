@@ -9,4 +9,5 @@ type Todo {
   description: String!
   completed: Boolean! @default(value: "false")
   user: User!
+  date: DateTime
 }

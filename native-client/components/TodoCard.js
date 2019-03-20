@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     flex: 1,
-    maxHeight: 60,
+    maxHeight: 70,
     overflow: 'scroll',
   },
   textComplete: {

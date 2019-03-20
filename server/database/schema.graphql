@@ -1,9 +1,16 @@
 # source: http://localhost:4000
 # timestamp: Thu Mar 14 2019 16:42:05 GMT-0600 (Mountain Daylight Time)
 
+scalar DateTime
+
 type Mutation {
   createUser(username: String!): User
-  createTodo(title: String!, description: String, username: String): Todo
+  createTodo(
+    title: String!
+    description: String
+    username: String
+    date: DateTime
+  ): Todo
   deleteTodo(id: ID!): Todo
   deleteCompletedTodos(username: String): [Todo]!
   updateTodo(
@@ -11,6 +18,7 @@ type Mutation {
     completed: Boolean
     description: String
     title: String
+    date: DateTime
   ): Todo
 }
 
@@ -37,6 +45,7 @@ type Todo implements Node {
   description: String!
   completed: Boolean!
   user: User!
+  date: DateTime
 }
 
 type User implements Node {

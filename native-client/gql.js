@@ -21,6 +21,7 @@ const ADD_TODO = gql`
       user {
         username
       }
+      date
     }
   }
 `;
@@ -33,6 +34,7 @@ const USER_TODOS = gql`
       description
       id
       completed
+      date
     }
   }
 `;
@@ -44,6 +46,7 @@ const TODOS = gql`
       description
       id
       completed
+      date
     }
   }
 `;
@@ -55,6 +58,7 @@ const TODO = gql`
       description
       id
       completed
+      date
     }
   }
 `;
@@ -65,12 +69,14 @@ const EDIT_TODO = gql`
     $description: String
     $completed: Boolean
     $id: ID!
+    $date: DateTime
   ) {
     updateTodo(
       title: $title
       description: $description
       completed: $completed
       id: $id
+      date: $date
     ) {
       title
       description
@@ -79,6 +85,7 @@ const EDIT_TODO = gql`
       user {
         username
       }
+      date
     }
   }
 `;

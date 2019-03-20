@@ -5,15 +5,20 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  Platform,
+  DatePickerAndroid,
 } from 'react-native';
-import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
+
+import { Ionicons, Feather } from '@expo/vector-icons';
 import Footer from './Footer';
 import theme from '../theme';
+import { formatDate } from '../utils';
 
 export default class EditTodo extends React.Component {
   state = {
     title: this.props.todo.title,
     description: this.props.todo.description,
+    date: this.props.todo.date,
   };
 
   // componentDidUpdate(prevProps) {
@@ -31,8 +36,23 @@ export default class EditTodo extends React.Component {
     });
   };
 
+  editDate = async () => {
+    try {
+      const { action, year, month, day } = await DatePickerAndroid.open({
+        // Use `new Date()` for current date.
+        // May 25 2020. Month 0 is January.
+        date: new Date(2020, 4, 25),
+      });
+      if (action !== DatePickerAndroid.dismissedAction) {
+        this.setState({ date: new Date(year, month, day) });
+      }
+    } catch ({ code, message }) {
+      console.warn('Cannot open date picker', message);
+    }
+  };
+
   submit = () => {
-    const { title, description } = this.state;
+    const { title, description, date } = this.state;
     const changes = {};
     // collect changes in an object
     if (title !== this.props.todo.title) {
@@ -40,6 +60,9 @@ export default class EditTodo extends React.Component {
     }
     if (description !== this.props.todo.description) {
       changes.description = description;
+    }
+    if (date !== this.props.todo.date) {
+      changes.date = date;
     }
     // only proceed if something changed
     if (Object.keys(changes).length) {
@@ -56,8 +79,8 @@ export default class EditTodo extends React.Component {
   };
 
   render() {
-    const { toggleEdit, navigation } = this.props;
-    const { title, description } = this.state;
+    const { navigation } = this.props;
+    const { title, description, date } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.editMode}>Edit Mode</Text>
@@ -66,6 +89,7 @@ export default class EditTodo extends React.Component {
           value={title}
           onChangeText={text => this.updateInputs({ text, name: 'title' })}
         />
+        <Text style={styles.heading}>{date ? formatDate(date) : ''}</Text>
         <TextInput
           style={styles.bodyText}
           value={description}
@@ -84,6 +108,14 @@ export default class EditTodo extends React.Component {
               <Ionicons
                 style={styles.icon}
                 name="md-arrow-round-back"
+                size={50}
+                color={theme.colors.mainDkOpaque}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.editDate}>
+              <Ionicons
+                style={styles.icon}
+                name="md-calendar"
                 size={50}
                 color={theme.colors.mainDkOpaque}
               />
