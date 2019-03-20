@@ -54,9 +54,10 @@ const styles = StyleSheet.create({
     paddingTop: theme.padding.headerClearance,
   },
   bodyText: {
+    paddingLeft: theme.padding.outer,
+    paddingRight: theme.padding.outer,
+    paddingTop: 20,
     flex: 1,
-    justifyContent: 'center',
-    textAlign: 'center',
     fontFamily: 'nunito600',
     fontSize: 22,
     color: theme.colors.mainDk,
