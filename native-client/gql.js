@@ -42,4 +42,29 @@ const TODOS = gql`
   }
 `;
 
-export { ADD_TODO, USER_TODOS, TODOS };
+const EDIT_TODO = gql`
+  mutation EditTodo(
+    $title: String
+    $description: String
+    $completed: Boolean
+    $id: ID!
+  ) {
+    username @client @export(as: "username")
+    updateTodo(
+      title: $title
+      description: $description
+      completed: $completed
+      id: $id
+    ) {
+      title
+      description
+      id
+      completed
+      user {
+        username
+      }
+    }
+  }
+`;
+
+export { ADD_TODO, USER_TODOS, TODOS, EDIT_TODO };

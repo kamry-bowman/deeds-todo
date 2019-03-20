@@ -49,10 +49,13 @@ module.exports = {
       return ctx.db.mutation.deleteTodo({ where: { id } }, info);
     },
     updateTodo(parent, { id, ...changes }, ctx, info) {
-      return ctx.db.mutation.updateTodo({
-        where: { id },
-        data: changes,
-      });
+      return ctx.db.mutation.updateTodo(
+        {
+          where: { id },
+          data: changes,
+        },
+        info
+      );
     },
   },
 };

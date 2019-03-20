@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import theme from '../theme';
 import AddTodo from '../components/AddTodo';
+import EditTodoMutation from '../components/EditTodoMutation';
 import MainLayout from '../components/MainLayout';
 import TodoCard from '../components/TodoCard';
 import { Query } from 'react-apollo';
@@ -23,15 +24,18 @@ export default class TodoList extends React.Component {
             ) : loading ? (
               <Text>loading...</Text>
             ) : (
-              <FlatList
-                style={styles.list}
-                data={data.todos}
-                renderItem={({ item }) => {
-                  console.log(item.id);
-                  return <TodoCard todo={item} />;
-                }}
-                keyExtractor={item => item.id}
-              />
+              <EditTodoMutation>
+                {editTodo => (
+                  <FlatList
+                    style={styles.list}
+                    data={data.todos}
+                    renderItem={({ item }) => {
+                      return <TodoCard todo={item} editTodo={editTodo} />;
+                    }}
+                    keyExtractor={item => item.id}
+                  />
+                )}
+              </EditTodoMutation>
             )}
           </MainLayout>
         )}

@@ -11,16 +11,21 @@ import { Mutation } from 'react-apollo';
 import { Ionicons } from '@expo/vector-icons';
 import theme from '../theme';
 
-const viewabilityConfig = {
-  itemVisiblePercentThreshold: 100,
-};
-
-export default function TodoCard({ todo }) {
-  const { title, complete } = todo;
+export default function TodoCard({ todo, editTodo }) {
+  const { title, completed } = todo;
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            editTodo({
+              variables: {
+                id: todo.id,
+                completed: !completed,
+              },
+            });
+          }}
+        >
           <Ionicons
             style={styles.icon}
             name="md-checkmark"
@@ -28,7 +33,7 @@ export default function TodoCard({ todo }) {
             color={theme.colors.mainDk}
           />
         </TouchableOpacity>
-        <Text style={styles.text}>{title}</Text>
+        <Text style={styles.text}>{`${title} - ${completed}`}</Text>
         <TouchableOpacity onPress={() => {}}>
           <Ionicons
             style={styles.icon}
