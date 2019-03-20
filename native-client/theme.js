@@ -9,6 +9,7 @@ export default {
   },
   padding: {
     outer: 10,
+    headerClearance: 20,
   },
   border: {
     radius: 10,

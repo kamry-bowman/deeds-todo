@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     borderBottomWidth: 4,
     borderBottomColor: theme.colors.mainDkTrans,
+    paddingTop: theme.padding.headerClearance,
   },
   addButton: {
     width: 60,
