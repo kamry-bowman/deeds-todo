@@ -1,17 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TouchableHighlight,
-  TextInput,
-  Alert,
-} from 'react-native';
 import { Mutation } from 'react-apollo';
-import { Ionicons } from '@expo/vector-icons';
 import { EDIT_TODO, TODOS } from '../gql';
-import theme from '../theme';
 
 export default function EditTodoMutation({ children }) {
   return (

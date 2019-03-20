@@ -1,7 +1,7 @@
 module.exports = {
   Query: {
     todos(parent, { username }, ctx, info) {
-      return ctx.db.query.todoes({}, info);
+      return ctx.db.query.todoes({ where: { user: { username } } }, info);
     },
     todo(parent, args, ctx, info) {
       return ctx.db.query.todo({ where: { id: args.id } }, info);
@@ -47,6 +47,21 @@ module.exports = {
     },
     deleteTodo(parent, { id }, ctx, info) {
       return ctx.db.mutation.deleteTodo({ where: { id } }, info);
+    },
+    deleteCompletedTodos(parent, { username }, ctx, info) {
+      return ctx.db.mutation
+        .deleteManyTodoes(
+          {
+            where: {
+              user: { username },
+              completed: true,
+            },
+          },
+          info
+        )
+        .then(() => {
+          return ctx.db.query.todoes({ where: { user: { username } } }, info);
+        });
     },
     updateTodo(parent, { id, ...changes }, ctx, info) {
       return ctx.db.mutation.updateTodo(

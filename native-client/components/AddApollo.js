@@ -4,6 +4,7 @@ import { ApolloClient, HttpLink, ApolloLink, concat } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { GQL_ENDPOINT } from 'react-native-dotenv';
+import { USERNAME } from '../gql';
 
 export default class AddApollo extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class AddApollo extends React.Component {
     const { username } = this.props.authData;
     const token = this.props.authData.signInUserSession.accessToken.jwtToken;
     const link = new HttpLink({
-      uri: GQL_ENDPOINT.replace('localhost', '10.0.2.2'),
+      uri: GQL_ENDPOINT /*.replace('localhost', '10.0.2.2')*/,
     });
 
     const authMiddleware = new ApolloLink((operation, forward) => {
@@ -31,13 +32,8 @@ export default class AddApollo extends React.Component {
       resolvers: {
         Query: {
           username: (root, args, { cache }) => {
-            const query = gql`
-              query {
-                username
-              }
-            `;
             try {
-              cache.readQuery({ query });
+              cache.readQuery({ query: USERNAME });
             } catch (err) {
               console.log('query error', err);
             }

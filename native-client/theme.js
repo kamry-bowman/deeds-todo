@@ -5,6 +5,7 @@ export default {
     mainDk: '#044389',
     mainDkTrans: 'rgba(4, 67, 137, 0.3)',
     mainDkOpaque: 'rgba(4, 67, 137, 0.6)',
+    mainDkSheer: 'rgba(4, 67, 137, 0.05)',
   },
   padding: {
     outer: 10,

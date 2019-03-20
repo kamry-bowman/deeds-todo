@@ -5,6 +5,7 @@ type Mutation {
   createUser(username: String!): User
   createTodo(title: String!, description: String, username: String): Todo
   deleteTodo(id: ID!): Todo
+  deleteCompletedTodos(username: String): [Todo]!
   updateTodo(
     id: ID!
     completed: Boolean

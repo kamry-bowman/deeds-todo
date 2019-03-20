@@ -61,6 +61,7 @@ const permissions = shield({
   },
   Mutation: {
     createTodo: isAuthorized,
+    deleteCompletedTodos: isAuthorized,
   },
 });
 

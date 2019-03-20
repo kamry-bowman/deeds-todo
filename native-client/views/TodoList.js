@@ -4,6 +4,7 @@ import theme from '../theme';
 import { Feather } from '@expo/vector-icons';
 import AddTodo from '../components/AddTodo';
 import EditTodoMutation from '../components/EditTodoMutation';
+import DeleteTodosMutation from '../components/DeleteTodosMutation';
 import MainLayout from '../components/MainLayout';
 import TodoCard from '../components/TodoCard';
 import Footer from '../components/Footer';
@@ -40,15 +41,22 @@ export default class TodoList extends React.Component {
               </EditTodoMutation>
             )}
             <Footer>
-              <TouchableOpacity style={styles.archiveButton} onPress={() => {}}>
-                <Text style={styles.archiveText}>Archive Complete</Text>
-                <Feather
-                  style={styles.icon}
-                  name="trash-2"
-                  size={50}
-                  color={theme.colors.mainDkOpaque}
-                />
-              </TouchableOpacity>
+              <DeleteTodosMutation>
+                {deleteCompletedTodos => (
+                  <TouchableOpacity
+                    style={styles.archiveButton}
+                    onPress={() => deleteCompletedTodos()}
+                  >
+                    <Text style={styles.archiveText}>Archive Complete</Text>
+                    <Feather
+                      style={styles.icon}
+                      name="trash-2"
+                      size={50}
+                      color={theme.colors.mainDkOpaque}
+                    />
+                  </TouchableOpacity>
+                )}
+              </DeleteTodosMutation>
             </Footer>
           </MainLayout>
         )}

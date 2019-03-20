@@ -14,5 +14,6 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     paddingLeft: theme.padding.outer,
     paddingRight: theme.padding.outer,
+    backgroundColor: theme.colors.mainDkSheer,
   },
 });

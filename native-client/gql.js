@@ -1,5 +1,11 @@
 import gql from 'graphql-tag';
 
+const USERNAME = gql`
+  query {
+    username
+  }
+`;
+
 const ADD_TODO = gql`
   mutation CreateTodo(
     $title: String!
@@ -49,7 +55,6 @@ const EDIT_TODO = gql`
     $completed: Boolean
     $id: ID!
   ) {
-    username @client @export(as: "username")
     updateTodo(
       title: $title
       description: $description
@@ -67,4 +72,26 @@ const EDIT_TODO = gql`
   }
 `;
 
-export { ADD_TODO, USER_TODOS, TODOS, EDIT_TODO };
+const DELETE_COMPLETED_TODOS = gql`
+  mutation DeleteTodos($username: String!) {
+    username @client @export(as: "username")
+    deleteCompletedTodos(username: $username) {
+      title
+      description
+      id
+      completed
+      user {
+        username
+      }
+    }
+  }
+`;
+
+export {
+  USERNAME,
+  ADD_TODO,
+  USER_TODOS,
+  TODOS,
+  EDIT_TODO,
+  DELETE_COMPLETED_TODOS,
+};
