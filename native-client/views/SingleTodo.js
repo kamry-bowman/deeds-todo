@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import MainLayout from '../components/MainLayout';
 import FullTodo from '../components/FullTodo';
 import EditTodo from '../components/EditTodo';
+import EditTodoMutation from '../components/EditTodoMutation';
 import { TODO } from '../gql';
 import theme from '../theme';
 
@@ -30,11 +31,16 @@ export default class TodoList extends React.Component {
             ) : loading ? (
               <Text>loading...</Text>
             ) : editing ? (
-              <EditTodo
-                todo={data.todo}
-                toggleEdit={this.toggleEdit}
-                navigation={this.props.navigation}
-              />
+              <EditTodoMutation>
+                {editTodo => (
+                  <EditTodo
+                    todo={data.todo}
+                    toggleEdit={this.toggleEdit}
+                    navigation={this.props.navigation}
+                    editTodo={editTodo}
+                  />
+                )}
+              </EditTodoMutation>
             ) : (
               <FullTodo
                 todo={data.todo}

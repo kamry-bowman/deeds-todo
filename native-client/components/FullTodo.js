@@ -9,9 +9,7 @@ export default function FullTodo({ todo, toggleEdit, navigation }) {
     <View style={styles.container}>
       <Text style={styles.heading}>{todo.title}</Text>
       {todo.description ? (
-        <Text style={styles.bodyText}>
-          {'Description: ' + todo.description}
-        </Text>
+        <Text style={styles.bodyText}>{todo.description}</Text>
       ) : (
         <View style={styles.placeholderContainer}>
           <Text style={styles.bodyTextPlaceholder}>No description yet.</Text>

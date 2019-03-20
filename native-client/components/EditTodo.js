@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
 import Footer from './Footer';
 import theme from '../theme';
 
@@ -16,10 +16,43 @@ export default class EditTodo extends React.Component {
     description: this.props.todo.description,
   };
 
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps !== this.props) {
+  //     this.setState({
+  //       title: this.props.todo.title,
+  //       description: this.props.todo.description,
+  //     });
+  //   }
+  // }
+
   updateInputs = ({ name, text }) => {
     this.setState({
       [name]: text,
     });
+  };
+
+  submit = () => {
+    const { title, description } = this.state;
+    const changes = {};
+    // collect changes in an object
+    if (title !== this.props.todo.title) {
+      changes.title = title;
+    }
+    if (description !== this.props.todo.description) {
+      changes.description = description;
+    }
+    // only proceed if something changed
+    if (Object.keys(changes).length) {
+      this.props
+        .editTodo({
+          variables: {
+            ...changes,
+            id: this.props.todo.id,
+          },
+        })
+        .then(this.props.toggleEdit)
+        .catch(console.log);
+    }
   };
 
   render() {
@@ -55,10 +88,10 @@ export default class EditTodo extends React.Component {
                 color={theme.colors.mainDkOpaque}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={toggleEdit}>
-              <AntDesign
+            <TouchableOpacity onPress={() => this.submit()}>
+              <Feather
                 style={styles.icon}
-                name="edit"
+                name="save"
                 size={50}
                 color={theme.colors.mainDkOpaque}
               />
