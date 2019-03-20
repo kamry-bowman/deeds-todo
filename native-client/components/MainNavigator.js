@@ -4,18 +4,6 @@ import TodoList from '../views/TodoList';
 import SingleTodo from '../views/SingleTodo';
 import Header from './Header';
 
-// export default createAppContainer(
-//   createStackNavigator(
-//     {
-//       TodoList,
-//       SingleTodo,
-//     },
-//     {
-//       initialRouteName: 'TodoList',
-//     }
-//   )
-// );
-
 const MainNavigator = createStackNavigator(
   {
     TodoList,

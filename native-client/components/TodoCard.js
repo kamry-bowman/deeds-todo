@@ -11,7 +11,7 @@ import { Mutation } from 'react-apollo';
 import { Ionicons } from '@expo/vector-icons';
 import theme from '../theme';
 
-export default function TodoCard({ todo, editTodo }) {
+export default function TodoCard({ todo, editTodo, ...rest }) {
   const { title, completed } = todo;
   if (!completed) {
     return (
@@ -35,7 +35,11 @@ export default function TodoCard({ todo, editTodo }) {
             />
           </TouchableOpacity>
           <Text style={styles.text}>{title}</Text>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() =>
+              rest.navigation.navigate('SingleTodo', { id: todo.id })
+            }
+          >
             <Ionicons
               style={styles.icon}
               name="md-more"

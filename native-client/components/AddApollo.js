@@ -24,7 +24,15 @@ export default class AddApollo extends React.Component {
       }));
       return forward(operation);
     });
-    const cache = new InMemoryCache();
+    const cache = new InMemoryCache({
+      cacheRedirects: {
+        Query: {
+          todo: (root, { id }, { getCacheKey }) => {
+            return getCacheKey({ __typename: 'Todo', id });
+          },
+        },
+      },
+    });
 
     this.client = new ApolloClient({
       cache,

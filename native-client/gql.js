@@ -38,8 +38,19 @@ const USER_TODOS = gql`
 `;
 
 const TODOS = gql`
-  {
+  query {
     todos(username: $username) {
+      title
+      description
+      id
+      completed
+    }
+  }
+`;
+
+const TODO = gql`
+  query Todo($id: ID!) {
+    todo(id: $id) {
       title
       description
       id
@@ -92,6 +103,7 @@ export {
   ADD_TODO,
   USER_TODOS,
   TODOS,
+  TODO,
   EDIT_TODO,
   DELETE_COMPLETED_TODOS,
 };

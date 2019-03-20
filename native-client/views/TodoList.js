@@ -15,13 +15,9 @@ export default class TodoList extends React.Component {
   render() {
     return (
       <Query query={USER_TODOS}>
-        {({ loading, error, data, refetch }) => (
+        {({ loading, error, data }) => (
           <MainLayout>
             <AddTodo />
-            {/* <Button
-              title="Single Todo"
-              onPress={() => this.props.navigation.navigate('SingleTodo')}
-            /> */}
             {error ? (
               <Text>error!</Text>
             ) : loading ? (
@@ -33,7 +29,13 @@ export default class TodoList extends React.Component {
                     style={styles.list}
                     data={data.todos}
                     renderItem={({ item }) => {
-                      return <TodoCard todo={item} editTodo={editTodo} />;
+                      return (
+                        <TodoCard
+                          todo={item}
+                          editTodo={editTodo}
+                          navigation={this.props.navigation}
+                        />
+                      );
                     }}
                     keyExtractor={item => item.id}
                   />
