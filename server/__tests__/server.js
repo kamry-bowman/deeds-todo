@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { server } = require('../server');
@@ -5,17 +7,24 @@ chai.use(chaiHttp);
 
 const expect = chai.expect;
 
-server.start();
+let httpServer;
 
 describe('smoke test', function() {
-  it('checks equality', function(done) {
+  before(function() {
+    return server.start().then(result => {
+      httpServer = result;
+    });
+  });
+  after(function() {
+    return httpServer.close();
+  });
+  it('checks equality', function() {
     return chai
-      .request(server)
+      .request(httpServer)
       .get('/')
       .then(res => {
-        console.log(res);
+        // console.log(res);
         expect(res).not.to.be.undefined;
-        return done();
       });
   });
 });

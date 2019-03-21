@@ -11,6 +11,7 @@ const {
 console.log(endpoint);
 
 const server = new GraphQLServer({
+  mocks: process.env.NODE_ENV === 'test',
   typeDefs: './server/database/schema.graphql',
   resolvers,
   middlewares: permissions,
