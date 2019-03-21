@@ -28,5 +28,5 @@ const server = new GraphQLServer({
 
 server.express.post(server.options.endpoint, bindAuth());
 server.start(() =>
-  console.log(`The server is running on port ${process.env.PORT || 4000}`);
+  console.log(`The server is running on port ${process.env.PORT || 4000}`)
 );
