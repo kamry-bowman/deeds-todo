@@ -3,10 +3,7 @@ const { Prisma } = require('prisma-binding');
 const resolvers = require('./resolvers');
 const { bindAuth, permissions } = require('./middleware');
 
-const {
-  PRISMA_ENDPOINT: endpoint,
-  PRISMA_MANAGEMENT_API_SECRET: secret,
-} = process.env;
+const { PRISMA_ENDPOINT: endpoint, PRISMA_SECRET: secret } = process.env;
 
 const server = new GraphQLServer({
   mocks: process.env.NODE_ENV === 'test',
@@ -19,7 +16,7 @@ const server = new GraphQLServer({
       typeDefs: 'server/database/generated/prisma.graphql',
       endpoint,
       secret,
-      debug: true,
+      debug: false,
     }),
   }),
   resolverValidationOptions: {

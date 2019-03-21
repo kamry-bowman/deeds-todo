@@ -25,15 +25,13 @@ function bindAuth() {
   }
 
   return async function authenticate(req, res, next) {
-    console.log(req.headers);
+    // console.log(req.headers);
     const { authorization } = req.headers;
     if (authorization) {
       return jwt.verify(authorization, getKey, {}, function(err, decoded) {
         if (err) {
-          console.log('line 33 error', err);
           return res.status(401).json({ message: 'Not authorized' });
         }
-        console.log('got past this');
         req.user = decoded;
         return next();
       });
@@ -42,32 +40,37 @@ function bindAuth() {
   };
 }
 
-const isAuthorized = rule()(async (parent, { username, id }, ctx, info) => {
-  // console.log(username);
-  // console.log(ctx.request.user);
+const idAuthorized = rule()((parent, { id }, ctx, info) => {
+  if (!id) {
+    return false;
+  }
 
-  // logic for searches based on username
-  // if (username && username !== ctx.request.user.id) {
-  //   return false;
-  // }
-
-  // logic for searches for todos
-  // ctx.db.exists
-  //   .Todo({ id, user: { username: ctx.request.user } })
-  //   .then(console.log);
-
-  return true;
+  return ctx.db.exists
+    .Todo({ id, user: { username: ctx.request.user.username } })
+    .catch(res => {
+      return false;
+    });
 });
 
-const permissions = shield({
-  Query: {
-    todos: isAuthorized,
-    todo: isAuthorized,
-  },
-  Mutation: {
-    createTodo: isAuthorized,
-    deleteCompletedTodos: isAuthorized,
-  },
+const usernameAuthorized = rule()((parent, { username }, ctx, info) => {
+  return username && username === ctx.request.user.username;
 });
+
+const permissions = [
+  shield({
+    Query: {
+      todos: usernameAuthorized,
+      todo: idAuthorized,
+      user: usernameAuthorized,
+    },
+    Mutation: {
+      createUser: usernameAuthorized,
+      createTodo: usernameAuthorized,
+      deleteTodo: idAuthorized,
+      deleteCompletedTodos: usernameAuthorized,
+      updateTodo: idAuthorized,
+    },
+  }),
+];
 
 module.exports = { bindAuth, permissions };

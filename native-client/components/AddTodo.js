@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TouchableHighlight, TextInput } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
 import AddTodoMutation from './AddTodoMutation';
 import { Ionicons } from '@expo/vector-icons';
 import theme from '../theme';
@@ -30,14 +30,14 @@ export default class TodoList extends React.Component {
           };
           return (
             <View style={styles.container}>
-              <TouchableHighlight onPress={handleSubmit}>
+              <TouchableOpacity onPress={handleSubmit}>
                 <Ionicons
                   style={styles.addButton}
                   name="md-add-circle"
                   size={50}
                   color={theme.colors.mainDk}
                 />
-              </TouchableHighlight>
+              </TouchableOpacity>
               <TextInput
                 placeholder="Enter a todo..."
                 placeholderTextColor={theme.colors.mainDkTrans}

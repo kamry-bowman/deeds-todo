@@ -13,15 +13,11 @@ const token = {
   value: { username: 'jim', id: 'jim111' },
 };
 
-function jwksRsaStub() {
-  return;
-}
-jwksRsaStub['@global'] = true;
-
 const jwtStub = {
   '@global': true,
   verify(authorization, getKey, config, callback) {
     if (authorization === token.token) {
+      // Promise.resolve to force async event loop resolution
       return Promise.resolve().then(() => callback(null, token.value));
     } else {
       return Promise.resolve().then(() => callback('bad token'));
@@ -31,7 +27,6 @@ const jwtStub = {
 
 const { server } = proxyquire('../server', {
   jsonwebtoken: jwtStub,
-  'jwks-rsa': jwksRsaStub,
 });
 
 chai.use(chaiHttp);
@@ -71,9 +66,7 @@ describe('test server', function() {
           variables: { username: 'kamry' },
         })
         .then(({ res }) => {
-          console.log(Object.keys(res));
           expect(res.statusCode).to.equal(401);
-          console.log(res.text);
           const data = JSON.parse(res.text);
           expect(data.message).to.equal('Not authorized');
           // const data = JSON.parse(res.text).data;
