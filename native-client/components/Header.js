@@ -11,7 +11,7 @@ export default class Header extends React.Component {
     // const signedIn = (authState === 'signedIn')
     return (
       <View style={styles.container}>
-        <Text style={styles.heading}>Deeds To Do</Text>
+        <Text style={styles.heading}>Deeds</Text>
         <AppContext>
           {({ signOut }) => (
             <TouchableHighlight onPress={signOut}>
