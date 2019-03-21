@@ -3,7 +3,8 @@ import { Font, AppLoading } from 'expo';
 import Amplify, { Auth } from 'aws-amplify';
 import MainNavigator from './components/MainNavigator';
 import AddApollo from './components/AddApollo';
-import { withAuthenticator } from 'aws-amplify-react-native';
+import { Authenticator } from 'aws-amplify-react-native';
+import { awsCustom } from './theme';
 import { userPoolId, region, userPoolWebClientId } from 'react-native-dotenv';
 
 GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest; // code for debugging network requests
@@ -21,12 +22,18 @@ const AppContext = React.createContext({ signOut: () => {} });
 class App extends React.Component {
   state = {
     assetsLoaded: false,
+    authState: null,
+    authData: null,
+  };
+
+  handleAuthStateChange = (state, data) => {
+    this.setState({ authState: state, authData: data });
   };
 
   signOut = () => {
     Auth.signOut()
       .then(res => {
-        this.props.onStateChange('signedOut');
+        this.handleAuthStateChange('signedOut', null);
       })
       .catch(err => console.log(err));
   };
@@ -42,8 +49,18 @@ class App extends React.Component {
   }
 
   render() {
-    return this.state.assetsLoaded ? (
-      <AddApollo authData={this.props.authData}>
+    const { assetsLoaded, authState, authData } = this.state;
+    return authState !== 'signedIn' ? (
+      <Authenticator
+        signUpConfig={{
+          header: 'Signup for Deeds',
+          hiddenDefaults: ['phone_number'],
+        }}
+        theme={awsCustom}
+        onStateChange={this.handleAuthStateChange}
+      />
+    ) : assetsLoaded ? (
+      <AddApollo authData={authData}>
         <AppContext.Provider value={{ signOut: this.signOut }}>
           <MainNavigator />
         </AppContext.Provider>
@@ -54,10 +71,4 @@ class App extends React.Component {
   }
 }
 
-const WrappedApp = withAuthenticator(App, {
-  signUpConfig: {
-    header: 'Signup for Deeds',
-    hiddenDefaults: ['phone_number'],
-  },
-});
-export { WrappedApp as default, AppContext };
+export { App as default, AppContext };

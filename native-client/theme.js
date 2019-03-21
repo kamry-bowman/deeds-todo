@@ -1,4 +1,6 @@
-export default {
+import { AmplifyTheme } from 'aws-amplify-react-native';
+
+const mainTheme = {
   colors: {
     bg: '#FCFF4B',
     mainLt: '#7CAFC4',
@@ -20,3 +22,38 @@ export default {
     borderColor: 'red',
   },
 };
+
+const awsCustom = {
+  ...AmplifyTheme,
+  input: {
+    ...AmplifyTheme.input,
+    backgroundColor: mainTheme.colors.mainDkSheer,
+    color: mainTheme.colors.mainDk,
+  },
+  inputLabel: {
+    ...AmplifyTheme.inputLabel,
+    color: mainTheme.colors.mainDk,
+  },
+  button: {
+    ...AmplifyTheme.buttonDisabled,
+    backgroundColor: mainTheme.colors.bg,
+  },
+  buttonDisabled: {
+    ...AmplifyTheme.buttonDisabled,
+    backgroundColor: 'rgba(252, 255, 75, 0.4)',
+  },
+  buttonText: {
+    ...AmplifyTheme.buttonText,
+    color: mainTheme.colors.mainDk,
+  },
+  sectionHeaderText: {
+    ...AmplifyTheme.sectionHeaderText,
+    color: mainTheme.colors.mainDk,
+  },
+  sectionFooterLink: {
+    ...AmplifyTheme.sectionFooterLink,
+    color: mainTheme.colors.mainDk,
+  },
+};
+
+export { mainTheme as default, awsCustom };

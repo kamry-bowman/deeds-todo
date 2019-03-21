@@ -98,6 +98,7 @@ const DELETE_COMPLETED_TODOS = gql`
       description
       id
       completed
+      date
       user {
         username
       }
