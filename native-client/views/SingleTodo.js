@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, ActivityIndicator } from 'react-native';
 import { Query } from 'react-apollo';
 import MainLayout from '../components/MainLayout';
 import FullTodo from '../components/FullTodo';
 import EditTodo from '../components/EditTodo';
+import ErrorMessage from '../components/ErrorMessage';
 import EditTodoMutation from '../components/EditTodoMutation';
 import { TODO } from '../gql';
 import theme from '../theme';
@@ -27,9 +28,9 @@ export default class TodoList extends React.Component {
         {({ loading, error, data }) => (
           <MainLayout>
             {error ? (
-              <Text>error!</Text>
+              <ErrorMessage />
             ) : loading ? (
-              <Text>loading...</Text>
+              <ActivityIndicator />
             ) : editing ? (
               <EditTodoMutation>
                 {editTodo => (

@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, TouchableHighlight, TextInput } from 'react-native';
 import AddTodoMutation from './AddTodoMutation';
 import { Ionicons } from '@expo/vector-icons';
-import { ADD_TODO, TODOS } from '../gql';
 import theme from '../theme';
 
 const initialState = {

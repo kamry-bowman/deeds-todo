@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Platform,
   DatePickerAndroid,
 } from 'react-native';
 

@@ -1,11 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import theme from '../theme';
 import { Feather } from '@expo/vector-icons';
 import AddTodo from '../components/AddTodo';
 import EditTodoMutation from '../components/EditTodoMutation';
 import DeleteTodosMutation from '../components/DeleteTodosMutation';
 import MainLayout from '../components/MainLayout';
+import ErrorMessage from '../components/ErrorMessage';
 import TodoCard from '../components/TodoCard';
 import Footer from '../components/Footer';
 import { Query } from 'react-apollo';
@@ -19,9 +26,9 @@ export default class TodoList extends React.Component {
           <MainLayout>
             <AddTodo />
             {error ? (
-              <Text>error!</Text>
+              <ErrorMessage />
             ) : loading ? (
-              <Text>loading...</Text>
+              <ActivityIndicator />
             ) : (
               <EditTodoMutation>
                 {editTodo => (
