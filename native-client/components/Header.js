@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Platform, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AppContext } from '../App';
@@ -14,9 +14,9 @@ export default class Header extends React.Component {
         <Text style={styles.heading}>Deeds</Text>
         <AppContext>
           {({ signOut }) => (
-            <TouchableHighlight onPress={signOut}>
+            <TouchableOpacity onPress={signOut}>
               <Ionicons name="md-exit" size={44} color={theme.colors.mainDk} />
-            </TouchableHighlight>
+            </TouchableOpacity>
           )}
         </AppContext>
       </View>

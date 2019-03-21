@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha server/__tests__",
     "prisma:deploy": "cd server/database && prisma deploy --env-file ../../.env"
   },
   "repository": {
@@ -28,7 +28,12 @@
     "prisma-binding": "^2.3.6"
   },
   "devDependencies": {
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
     "dotenv": "^6.2.0",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "proxyquire": "^2.1.0",
+    "sinon": "^7.3.0"
   }
 }

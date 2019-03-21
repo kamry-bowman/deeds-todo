@@ -28,41 +28,49 @@ function bindAuth() {
     // console.log(req.headers);
     const { authorization } = req.headers;
     if (authorization) {
-      jwt.verify(authorization, getKey, {}, function(err, decoded) {
-        // console.log(decoded);
+      return jwt.verify(authorization, getKey, {}, function(err, decoded) {
+        if (err) {
+          return res.status(401).json({ message: 'Not authorized' });
+        }
         req.user = decoded;
+        return next();
       });
     }
-    return next();
+    return res.status(401).json({ message: 'Not authorized' });
   };
 }
 
-const isAuthorized = rule()(async (parent, { username, id }, ctx, info) => {
-  console.log(username);
-  console.log(ctx.request.user);
+const idAuthorized = rule()((parent, { id }, ctx, info) => {
+  if (!id) {
+    return false;
+  }
 
-  // logic for searches based on username
-  // if (username && username !== ctx.request.user.id) {
-  //   return false;
-  // }
-
-  // logic for searches for todos
-  // ctx.db.exists
-  //   .Todo({ id, user: { username: ctx.request.user } })
-  //   .then(console.log);
-
-  return true;
+  return ctx.db.exists
+    .Todo({ id, user: { username: ctx.request.user.username } })
+    .catch(res => {
+      return false;
+    });
 });
 
-const permissions = shield({
-  Query: {
-    todos: isAuthorized,
-    todo: isAuthorized,
-  },
-  Mutation: {
-    createTodo: isAuthorized,
-    deleteCompletedTodos: isAuthorized,
-  },
+const usernameAuthorized = rule()((parent, { username }, ctx, info) => {
+  return username && username === ctx.request.user.username;
 });
+
+const permissions = [
+  shield({
+    Query: {
+      todos: usernameAuthorized,
+      todo: idAuthorized,
+      user: usernameAuthorized,
+    },
+    Mutation: {
+      createUser: usernameAuthorized,
+      createTodo: usernameAuthorized,
+      deleteTodo: idAuthorized,
+      deleteCompletedTodos: usernameAuthorized,
+      updateTodo: idAuthorized,
+    },
+  }),
+];
 
 module.exports = { bindAuth, permissions };
