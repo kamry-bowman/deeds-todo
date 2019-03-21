@@ -1,17 +1,14 @@
-require('dotenv').config({ debug: true });
 const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
 const resolvers = require('./resolvers');
 const { bindAuth, permissions } = require('./middleware');
-
-console.log(process.env);
 
 const {
   PRISMA_ENDPOINT: endpoint,
   PRISMA_MANAGEMENT_API_SECRET: secret,
 } = process.env;
 
-console.log(PRISMA_ENDPOINT);
+console.log(endpoint);
 
 const server = new GraphQLServer({
   typeDefs: './server/database/schema.graphql',
