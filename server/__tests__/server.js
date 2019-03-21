@@ -6,23 +6,33 @@ const proxyquire = require('proxyquire');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-// stub out jwks-rsa module in middleware to avoid needing to
+// stub out jwks-rsa and jsonwebtoken modules in middleware to avoid needing to
 // obtain actual tokens from Amazon
-function jwksRsaStub({ cache, jwksUri }) {
-  if (cache && jwksUri) {
-    return {
-      getSigningKey: (kid, cb) => {
-        console.log(kid);
-        cb(null, 'test-secret');
-      },
-    };
-  }
-  throw new Error('bad config passed to jwk-rsa');
-}
+const token = {
+  token: `jim's token`,
+  value: { username: 'jim', id: 'jim111' },
+};
 
+function jwksRsaStub() {
+  return;
+}
 jwksRsaStub['@global'] = true;
 
-const { server } = proxyquire('../server', { 'jwks-rsa': jwksRsaStub });
+const jwtStub = {
+  '@global': true,
+  verify(authorization, getKey, config, callback) {
+    if (authorization === token.token) {
+      return Promise.resolve().then(() => callback(null, token.value));
+    } else {
+      return Promise.resolve().then(() => callback('bad token'));
+    }
+  },
+};
+
+const { server } = proxyquire('../server', {
+  jsonwebtoken: jwtStub,
+  'jwks-rsa': jwksRsaStub,
+});
 
 chai.use(chaiHttp);
 
@@ -38,6 +48,39 @@ describe('test server', function() {
   });
   after(function() {
     return httpServer.close();
+  });
+  describe('authentication', function() {
+    it('rejects bad tokens with 401', function() {
+      const query = `
+      query userTodos($username: String!) {
+        todos(username: $username) {
+          title
+          description
+          id
+          completed
+          date
+        }
+      }
+    `;
+      return chai
+        .request(httpServer)
+        .post('/')
+        .set('authorization', 'bad token')
+        .send({
+          query: query,
+          variables: { username: 'kamry' },
+        })
+        .then(({ res }) => {
+          console.log(Object.keys(res));
+          expect(res.statusCode).to.equal(401);
+          console.log(res.text);
+          const data = JSON.parse(res.text);
+          expect(data.message).to.equal('Not authorized');
+          // const data = JSON.parse(res.text).data;
+          // expect(data.todos).to.be.an('array');
+          // expect(data.todos[0].title).to.be.a('string');
+        });
+    });
   });
   describe('todos', function() {
     it('get returned for a user', function() {
@@ -55,7 +98,7 @@ describe('test server', function() {
       return chai
         .request(httpServer)
         .post('/')
-        .set('authorization', 'jwt token')
+        .set('authorization', token.token)
         .send({
           query: query,
           variables: { username: 'kamry' },
