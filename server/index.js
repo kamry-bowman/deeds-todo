@@ -4,10 +4,7 @@ const resolvers = require('./resolvers');
 const { bindAuth, permissions } = require('./middleware');
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
-const {
-  PRISMA_ENDPOINT: endpoint,
-  PRISMA_MANAGEMENT_API_SECRET: secret,
-} = process.env;
+const { PRISMA_ENDPOINT: endpoint, PRISMA_SECRET: secret } = process.env;
 
 const server = new GraphQLServer({
   typeDefs: './server/database/schema.graphql',
