@@ -2,7 +2,7 @@ const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
 const resolvers = require('./resolvers');
 const { bindAuth, permissions } = require('./middleware');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 const {
   PRISMA_ENDPOINT: endpoint,
@@ -19,7 +19,6 @@ const server = new GraphQLServer({
       typeDefs: 'server/database/generated/prisma.graphql',
       endpoint,
       secret,
-      debug: true,
     }),
   }),
   resolverValidationOptions: {
@@ -29,5 +28,5 @@ const server = new GraphQLServer({
 
 server.express.post(server.options.endpoint, bindAuth());
 server.start(() =>
-  console.log(`The server is running on http://localhost:4000`)
+  console.log(`The server is running on port ${process.env.PORT || 4000}`);
 );
