@@ -38,8 +38,8 @@ function bindAuth() {
 }
 
 const isAuthorized = rule()(async (parent, { username, id }, ctx, info) => {
-  console.log(username);
-  console.log(ctx.request.user);
+  // console.log(username);
+  // console.log(ctx.request.user);
 
   // logic for searches based on username
   // if (username && username !== ctx.request.user.id) {

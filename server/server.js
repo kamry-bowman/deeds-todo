@@ -8,8 +8,6 @@ const {
   PRISMA_MANAGEMENT_API_SECRET: secret,
 } = process.env;
 
-console.log(endpoint);
-
 const server = new GraphQLServer({
   mocks: process.env.NODE_ENV === 'test',
   typeDefs: './server/database/schema.graphql',
