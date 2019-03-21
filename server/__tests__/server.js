@@ -45,5 +45,40 @@ describe('test server', function() {
           expect(data.todos[0].title).to.be.a('string');
         });
     });
+    it('creates a todo', function() {
+      const query = `mutation CreateTodo(
+        $title: String!
+        $description: String
+        $username: String!
+      ) {
+        createTodo(title: $title, description: $description, username: $username) {
+          title
+          description
+          id
+          completed
+          user {
+            username
+          }
+          date
+        }
+      }
+    `;
+      return chai
+        .request(httpServer)
+        .post('/')
+        .send({
+          query: query,
+          variables: {
+            username: 'kamry',
+            description: 'Fast',
+            title: 'Clean room',
+          },
+        })
+        .then(({ res }) => {
+          const data = JSON.parse(res.text).data;
+          expect(data.createTodo).not.to.be.undefined;
+          expect(data.createTodo.title).to.be.a('string');
+        });
+    });
   });
 });
