@@ -25,15 +25,20 @@ function bindAuth() {
   }
 
   return async function authenticate(req, res, next) {
-    // console.log(req.headers);
+    console.log(req.headers);
     const { authorization } = req.headers;
     if (authorization) {
-      jwt.verify(authorization, getKey, {}, function(err, decoded) {
-        // console.log(decoded);
+      return jwt.verify(authorization, getKey, {}, function(err, decoded) {
+        if (err) {
+          console.log('line 33 error', err);
+          return res.status(401).json({ message: 'Not authorized' });
+        }
+        console.log('got past this');
         req.user = decoded;
+        return next();
       });
     }
-    return next();
+    return res.status(401).json({ message: 'Not authorized' });
   };
 }
 

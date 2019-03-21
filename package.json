@@ -32,6 +32,7 @@
     "chai-http": "^4.2.1",
     "dotenv": "^6.2.0",
     "nodemon": "^1.18.10",
+    "proxyquire": "^2.1.0",
     "sinon": "^7.3.0"
   }
 }
