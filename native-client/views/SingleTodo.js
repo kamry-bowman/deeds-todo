@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, ActivityIndicator } from 'react-native';
 import { Query } from 'react-apollo';
 import MainLayout from '../components/MainLayout';
 import FullTodo from '../components/FullTodo';
@@ -30,7 +30,7 @@ export default class TodoList extends React.Component {
             {error ? (
               <ErrorMessage />
             ) : loading ? (
-              <ActivityIndicator />
+              <ActivityIndicator size="large" color={theme.colors.mainDk} />
             ) : editing ? (
               <EditTodoMutation>
                 {editTodo => (

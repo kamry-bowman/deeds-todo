@@ -1,5 +1,5 @@
 import React from 'react';
-import { Font, AppLoading, Constants } from 'expo';
+import { Font, AppLoading } from 'expo';
 import Amplify, { Auth } from 'aws-amplify';
 import AppContext from './components/Context';
 import MainNavigator from './components/MainNavigator';

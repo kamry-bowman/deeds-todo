@@ -29,7 +29,7 @@ export default class TodoList extends React.Component {
               {error ? (
                 <ErrorMessage />
               ) : loading ? (
-                <ActivityIndicator />
+                <ActivityIndicator size="large" color={theme.colors.mainDk} />
               ) : (
                 <EditTodoMutation>
                   {editTodo => (

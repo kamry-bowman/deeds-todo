@@ -1,12 +1,14 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import MainLayout from './MainLayout';
 import { ApolloClient, HttpLink, ApolloLink, concat } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { GQL_ENDPOINT } from 'react-native-dotenv';
 import { USERNAME } from '../gql';
+import theme from '../theme';
 
 export default class AddApollo extends React.Component {
   constructor(props) {
@@ -97,8 +99,17 @@ export default class AddApollo extends React.Component {
       </ApolloProvider>
     ) : (
       <MainLayout>
-        <ActivityIndicator />
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color={theme.colors.mainDk} />
+        </View>
       </MainLayout>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+});
