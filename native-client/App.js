@@ -38,18 +38,17 @@ export default class App extends React.Component {
       .then(res => {
         this.handleAuthStateChange('signedOut', null);
       })
-      .catch(err => console.log(err));
+      .catch(err => err);
   };
 
   componentDidMount() {
-    console.log('smoketest');
     Font.loadAsync({
       nunito900: require('./assets/fonts/Nunito-Black.ttf'),
       nunito700: require('./assets/fonts/Nunito-SemiBold.ttf'),
       nunito600: require('./assets/fonts/Nunito-Bold.ttf'),
     })
       .then(() => this.setState({ assetsLoaded: true }))
-      .catch(console.log);
+      .catch(err => err);
   }
 
   render() {

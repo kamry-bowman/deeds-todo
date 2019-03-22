@@ -23,7 +23,6 @@ export default class TodoList extends React.Component {
     return (
       <Query query={USER_TODOS}>
         {({ loading, error, data }) => {
-          console.log(error);
           return (
             <MainLayout>
               <AddTodo />

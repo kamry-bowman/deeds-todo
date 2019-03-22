@@ -65,7 +65,7 @@ export default class EditTodo extends React.Component {
           },
         })
         .then(this.props.toggleEdit)
-        .catch(console.log);
+        .catch(err => err);
     }
   };
 

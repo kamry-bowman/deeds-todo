@@ -28,7 +28,6 @@
     "prisma-binding": "^2.3.6"
   },
   "devDependencies": {
-    "babel-plugin-transform-remove-console": "^6.9.4",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "dotenv": "^6.2.0",

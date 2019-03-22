@@ -18,9 +18,9 @@ export default class AddApollo extends React.Component {
     const { username } = props.authData;
     const token = props.authData.signInUserSession.accessToken.jwtToken;
     const link = new HttpLink({
-      uri: false
+      uri: true
         ? GQL_ENDPOINT
-        : 'http://localhost:4000' /*.replace('localhost', '10.0.2.2')*/,
+        : 'http://localhost:4000/' /*.replace('localhost', '10.0.2.2')*/,
     });
 
     const authMiddleware = new ApolloLink((operation, forward) => {
@@ -51,7 +51,7 @@ export default class AddApollo extends React.Component {
             try {
               cache.readQuery({ query: USERNAME });
             } catch (err) {
-              console.log('query error', err);
+              return err;
             }
           },
         },

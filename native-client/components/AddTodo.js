@@ -26,7 +26,7 @@ export default class TodoList extends React.Component {
               .then(result => {
                 this.setState({ ...initialState });
               })
-              .catch(err => console.log(err));
+              .catch(err => err);
           };
           return (
             <View style={styles.container}>
