@@ -12,9 +12,9 @@ const MainNavigator = createStackNavigator(
   {
     initialRouteName: 'TodoList',
     headerMode: 'screen',
-    defaultNavigationOptions: {
-      header: <Header />,
-    },
+    defaultNavigationOptions: ({ navigation }) => ({
+      header: <Header navigation={navigation} />,
+    }),
   }
 );
 const MainApp = createAppContainer(MainNavigator);

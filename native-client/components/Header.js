@@ -9,7 +9,11 @@ export default class Header extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.heading}>Deeds</Text>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate('TodoList')}
+        >
+          <Text style={styles.heading}>Deeds</Text>
+        </TouchableOpacity>
         <AppContext>
           {({ signOut }) => (
             <TouchableOpacity onPress={signOut}>

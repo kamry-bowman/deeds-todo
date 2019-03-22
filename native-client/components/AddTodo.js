@@ -24,7 +24,6 @@ export default class AddTodo extends React.Component {
               },
             })
               .then(result => {
-                console.log(result);
                 this.props.navigation.navigate('SingleTodo', {
                   id: result.data.createTodo.id,
                 });

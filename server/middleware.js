@@ -23,7 +23,6 @@ function bindAuth() {
   }
 
   return async function authenticate(req, res, next) {
-    // console.log(req.headers);
     const { authorization } = req.headers;
     if (authorization) {
       return jwt.verify(authorization, getKey, {}, function(err, decoded) {
@@ -46,7 +45,6 @@ const idAuthorized = rule()((parent, { id }, ctx, info) => {
   return ctx.db.exists
     .Todo({ id, user: { username: ctx.request.user.username } })
     .catch(res => {
-      console.log(res);
       return false;
     });
 });

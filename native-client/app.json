@@ -25,6 +25,9 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "package": "com.kam.deeds"
+    },
     "description": "",
     "githubUrl": "https://github.com/kamry-bowman/deeds-todo"
   }

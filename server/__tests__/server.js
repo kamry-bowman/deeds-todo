@@ -222,7 +222,6 @@ describe('test server', function() {
         .then(({ res }) => {
           expect(res.statusCode).to.equal(200);
           const data = JSON.parse(res.text);
-          console.log(data);
           expect(data.data.updateTodo).to.equal(null);
           expect(data.errors[0].message).to.equal('Not Authorised!');
         });
