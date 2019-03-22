@@ -1,6 +1,6 @@
 const jwksClient = require('jwks-rsa');
 const jwt = require('jsonwebtoken');
-const { rule, shield, and, or, not } = require('graphql-shield');
+const { rule, shield } = require('graphql-shield');
 
 // returns an express middleware to verify jwt token and add user to req
 // prior to request entering graphql processing
@@ -9,8 +9,6 @@ function bindAuth() {
     COGNITO_USER_POOL_ID: userPoolId,
     COGNITO_REGION: region,
   } = process.env;
-
-  // console.log('line 9', region);
 
   const client = jwksClient({
     cache: true,
@@ -48,6 +46,7 @@ const idAuthorized = rule()((parent, { id }, ctx, info) => {
   return ctx.db.exists
     .Todo({ id, user: { username: ctx.request.user.username } })
     .catch(res => {
+      console.log(res);
       return false;
     });
 });

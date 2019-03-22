@@ -69,9 +69,6 @@ describe('test server', function() {
           expect(res.statusCode).to.equal(401);
           const data = JSON.parse(res.text);
           expect(data.message).to.equal('Not authorized');
-          // const data = JSON.parse(res.text).data;
-          // expect(data.todos).to.be.an('array');
-          // expect(data.todos[0].title).to.be.a('string');
         });
     });
   });
@@ -84,6 +81,9 @@ describe('test server', function() {
         id
         completed
         date
+        user {
+          username
+        }
       }
     }
   `;
@@ -98,6 +98,7 @@ describe('test server', function() {
           variables: { username: token.value.username },
         })
         .then(({ res }) => {
+          expect(res.statusCode).to.equal(200);
           const data = JSON.parse(res.text).data;
           expect(data.todos).to.be.an('array');
           expect(data.todos[0].title).to.be.a('string');
@@ -174,6 +175,55 @@ describe('test server', function() {
           expect(res.statusCode).to.equal(200);
           const data = JSON.parse(res.text);
           expect(data.data.createTodo).to.equal(null);
+          expect(data.errors[0].message).to.equal('Not Authorised!');
+        });
+    });
+  });
+  describe('update Todo mutation', function() {
+    const query = `mutation EditTodo(
+      $title: String
+      $description: String
+      $completed: Boolean
+      $id: ID!
+      $date: DateTime
+    ) {
+      updateTodo(
+        title: $title
+        description: $description
+        completed: $completed
+        id: $id
+        date: $date
+      ) {
+        title
+        description
+        id
+        completed
+        user {
+          username
+        }
+        date
+      }
+    }
+  `;
+    it('rejects for bad user', function() {
+      return chai
+        .request(httpServer)
+        .post('/')
+        .set('authorization', token.token)
+        .send({
+          query: query,
+          variables: {
+            username: token.value.username + 'bad',
+            description: 'Slow',
+            title: 'Churn Butter',
+            id: '2a268772-9ab3-471e-97c6-a1ffbad38ca6',
+          },
+        })
+        .then(({ res }) => {
+          expect(res.statusCode).to.equal(200);
+          const data = JSON.parse(res.text);
+          console.log(data);
+          expect(data.data.updateTodo).to.equal(null);
           expect(data.errors[0].message).to.equal('Not Authorised!');
         });
     });
