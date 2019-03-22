@@ -25,7 +25,7 @@ export default class TodoList extends React.Component {
         {({ loading, error, data }) => {
           return (
             <MainLayout>
-              <AddTodo />
+              <AddTodo navigation={this.props.navigation} />
               {error ? (
                 <ErrorMessage />
               ) : loading ? (

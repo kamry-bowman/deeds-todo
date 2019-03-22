@@ -9,7 +9,7 @@ const initialState = {
   description: '',
 };
 
-export default class TodoList extends React.Component {
+export default class AddTodo extends React.Component {
   state = { ...initialState };
 
   render() {
@@ -24,7 +24,10 @@ export default class TodoList extends React.Component {
               },
             })
               .then(result => {
-                this.setState({ ...initialState });
+                console.log(result);
+                this.props.navigation.navigate('SingleTodo', {
+                  id: result.data.createTodo.id,
+                });
               })
               .catch(err => err);
           };
