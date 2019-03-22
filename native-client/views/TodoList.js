@@ -22,53 +22,56 @@ export default class TodoList extends React.Component {
   render() {
     return (
       <Query query={USER_TODOS}>
-        {({ loading, error, data }) => (
-          <MainLayout>
-            <AddTodo />
-            {error ? (
-              <ErrorMessage />
-            ) : loading ? (
-              <ActivityIndicator />
-            ) : (
-              <EditTodoMutation>
-                {editTodo => (
-                  <FlatList
-                    style={styles.list}
-                    data={data.todos}
-                    renderItem={({ item }) => {
-                      return (
-                        <TodoCard
-                          todo={item}
-                          editTodo={editTodo}
-                          navigation={this.props.navigation}
-                        />
-                      );
-                    }}
-                    keyExtractor={item => item.id}
-                  />
-                )}
-              </EditTodoMutation>
-            )}
-            <Footer>
-              <DeleteTodosMutation>
-                {deleteCompletedTodos => (
-                  <TouchableOpacity
-                    style={styles.archiveButton}
-                    onPress={() => deleteCompletedTodos()}
-                  >
-                    <Text style={styles.archiveText}>Archive Complete</Text>
-                    <Feather
-                      style={styles.icon}
-                      name="trash-2"
-                      size={50}
-                      color={theme.colors.mainDkOpaque}
+        {({ loading, error, data }) => {
+          console.log(error);
+          return (
+            <MainLayout>
+              <AddTodo />
+              {error ? (
+                <ErrorMessage />
+              ) : loading ? (
+                <ActivityIndicator />
+              ) : (
+                <EditTodoMutation>
+                  {editTodo => (
+                    <FlatList
+                      style={styles.list}
+                      data={data.todos}
+                      renderItem={({ item }) => {
+                        return (
+                          <TodoCard
+                            todo={item}
+                            editTodo={editTodo}
+                            navigation={this.props.navigation}
+                          />
+                        );
+                      }}
+                      keyExtractor={item => item.id}
                     />
-                  </TouchableOpacity>
-                )}
-              </DeleteTodosMutation>
-            </Footer>
-          </MainLayout>
-        )}
+                  )}
+                </EditTodoMutation>
+              )}
+              <Footer>
+                <DeleteTodosMutation>
+                  {deleteCompletedTodos => (
+                    <TouchableOpacity
+                      style={styles.archiveButton}
+                      onPress={() => deleteCompletedTodos()}
+                    >
+                      <Text style={styles.archiveText}>Archive Complete</Text>
+                      <Feather
+                        style={styles.icon}
+                        name="trash-2"
+                        size={50}
+                        color={theme.colors.mainDkOpaque}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </DeleteTodosMutation>
+              </Footer>
+            </MainLayout>
+          );
+        }}
       </Query>
     );
   }

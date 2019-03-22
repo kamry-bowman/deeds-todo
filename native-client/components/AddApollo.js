@@ -18,7 +18,7 @@ export default class AddApollo extends React.Component {
     const { username } = props.authData;
     const token = props.authData.signInUserSession.accessToken.jwtToken;
     const link = new HttpLink({
-      uri: true
+      uri: false
         ? GQL_ENDPOINT
         : 'http://localhost:4000' /*.replace('localhost', '10.0.2.2')*/,
     });
