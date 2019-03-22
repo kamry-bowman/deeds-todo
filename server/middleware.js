@@ -56,21 +56,19 @@ const usernameAuthorized = rule()((parent, { username }, ctx, info) => {
   return username && username === ctx.request.user.username;
 });
 
-const permissions = [
-  shield({
-    Query: {
-      todos: usernameAuthorized,
-      todo: idAuthorized,
-      user: usernameAuthorized,
-    },
-    Mutation: {
-      createUser: usernameAuthorized,
-      createTodo: usernameAuthorized,
-      deleteTodo: idAuthorized,
-      deleteCompletedTodos: usernameAuthorized,
-      updateTodo: idAuthorized,
-    },
-  }),
-];
+const permissions = shield({
+  Query: {
+    todos: usernameAuthorized,
+    todo: idAuthorized,
+    user: usernameAuthorized,
+  },
+  Mutation: {
+    createUser: usernameAuthorized,
+    createTodo: usernameAuthorized,
+    deleteTodo: idAuthorized,
+    deleteCompletedTodos: usernameAuthorized,
+    updateTodo: idAuthorized,
+  },
+});
 
 module.exports = { bindAuth, permissions };

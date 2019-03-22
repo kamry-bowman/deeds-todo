@@ -18,10 +18,9 @@ export default class AddApollo extends React.Component {
     const { username } = props.authData;
     const token = props.authData.signInUserSession.accessToken.jwtToken;
     const link = new HttpLink({
-      uri:
-        Constants.manifest.releaseChannel === 'prod'
-          ? GQL_ENDPOINT
-          : 'http://localhost:4000' /*.replace('localhost', '10.0.2.2')*/,
+      uri: true
+        ? GQL_ENDPOINT
+        : 'http://localhost:4000' /*.replace('localhost', '10.0.2.2')*/,
     });
 
     const authMiddleware = new ApolloLink((operation, forward) => {

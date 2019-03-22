@@ -8,10 +8,11 @@ import { Authenticator } from 'aws-amplify-react-native';
 import { awsCustom } from './theme';
 import { userPoolId, region, userPoolWebClientId } from 'react-native-dotenv';
 
-if (Constants.manifest.releaseChannel !== 'prod') {
-  GLOBAL.XMLHttpRequest =
-    GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest; // code for debugging network requests
-}
+// GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
+
+// if (!Constants.manifest || Constants.manifest.releaseChannel !== 'prod') {
+// code for debugging network requests
+// }
 
 Amplify.configure({
   Auth: {
@@ -41,6 +42,7 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
+    console.log('smoketest');
     Font.loadAsync({
       nunito900: require('./assets/fonts/Nunito-Black.ttf'),
       nunito700: require('./assets/fonts/Nunito-SemiBold.ttf'),

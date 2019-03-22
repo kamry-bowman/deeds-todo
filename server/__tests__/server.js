@@ -98,7 +98,6 @@ describe('test server', function() {
           variables: { username: token.value.username },
         })
         .then(({ res }) => {
-          console.log(res.text);
           const data = JSON.parse(res.text).data;
           expect(data.todos).to.be.an('array');
           expect(data.todos[0].title).to.be.a('string');
@@ -114,45 +113,69 @@ describe('test server', function() {
           variables: { username: 'andrew' },
         })
         .then(({ res }) => {
-          expect(res.statusCode).to.equal(401);
+          expect(res.statusCode).to.equal(200);
           const data = JSON.parse(res.text);
-          expect(data.message).to.equal('Not authorized');
+          expect(data.data).to.equal(null);
+          expect(data.errors[0].message).to.equal('Not Authorised!');
         });
     });
-    // it('creates a todo', function() {
-    //   const query = `mutation CreateTodo(
-    //     $title: String!
-    //     $description: String
-    //     $username: String!
-    //   ) {
-    //     createTodo(title: $title, description: $description, username: $username) {
-    //       title
-    //       description
-    //       id
-    //       completed
-    //       user {
-    //         username
-    //       }
-    //       date
-    //     }
-    //   }
-    // `;
-    //   return chai
-    //     .request(httpServer)
-    //     .post('/')
-    //     .send({
-    //       query: query,
-    //       variables: {
-    //         username: 'kamry',
-    //         description: 'Fast',
-    //         title: 'Clean room',
-    //       },
-    //     })
-    //     .then(({ res }) => {
-    //       const data = JSON.parse(res.text).data;
-    //       expect(data.createTodo).not.to.be.undefined;
-    //       expect(data.createTodo.title).to.be.a('string');
-    //     });
-    // });
+  });
+  describe('createTodo mutation', function() {
+    const query = `mutation CreateTodo(
+        $title: String!
+        $description: String
+        $username: String!
+      ) {
+        createTodo(title: $title, description: $description, username: $username) {
+          title
+          description
+          id
+          completed
+          user {
+            username
+          }
+          date
+        }
+      }
+    `;
+    it('creates a todo', function() {
+      return chai
+        .request(httpServer)
+        .post('/')
+        .set('authorization', token.token)
+        .send({
+          query: query,
+          variables: {
+            username: token.value.username,
+            description: 'Fast',
+            title: 'Clean room',
+          },
+        })
+        .then(({ res }) => {
+          const data = JSON.parse(res.text).data;
+          expect(data.createTodo).not.to.be.undefined;
+          expect(data.createTodo.title).to.be.a('string');
+        });
+    });
+    it('rejects for bad user', function() {
+      return chai
+        .request(httpServer)
+        .post('/')
+        .set('authorization', token.token)
+        .send({
+          query: query,
+          variables: {
+            username: token.value.username + 'bad',
+            description: 'Fast',
+            title: 'Clean room',
+          },
+        })
+        .then(({ res }) => {
+          expect(res.statusCode).to.equal(200);
+          const data = JSON.parse(res.text);
+          expect(data.data.createTodo).to.equal(null);
+          expect(data.errors[0].message).to.equal('Not Authorised!');
+        });
+    });
   });
 });
