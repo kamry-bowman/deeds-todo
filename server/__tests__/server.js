@@ -75,31 +75,48 @@ describe('test server', function() {
         });
     });
   });
-  describe('todos', function() {
-    it('get returned for a user', function() {
-      const query = `
-      query userTodos($username: String!) {
-        todos(username: $username) {
-          title
-          description
-          id
-          completed
-          date
-        }
+  describe('todos query', function() {
+    const query = `
+    query userTodos($username: String!) {
+      todos(username: $username) {
+        title
+        description
+        id
+        completed
+        date
       }
-    `;
+    }
+  `;
+
+    it('get returned for a user', function() {
       return chai
         .request(httpServer)
         .post('/')
         .set('authorization', token.token)
         .send({
           query: query,
-          variables: { username: 'kamry' },
+          variables: { username: token.value.username },
         })
         .then(({ res }) => {
+          console.log(res.text);
           const data = JSON.parse(res.text).data;
           expect(data.todos).to.be.an('array');
           expect(data.todos[0].title).to.be.a('string');
+        });
+    });
+    it('get rejected for wrong user', function() {
+      return chai
+        .request(httpServer)
+        .post('/')
+        .set('authorization', token.token)
+        .send({
+          query: query,
+          variables: { username: 'andrew' },
+        })
+        .then(({ res }) => {
+          expect(res.statusCode).to.equal(401);
+          const data = JSON.parse(res.text);
+          expect(data.message).to.equal('Not authorized');
         });
     });
     // it('creates a todo', function() {

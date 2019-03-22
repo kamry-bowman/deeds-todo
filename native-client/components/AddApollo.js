@@ -1,5 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
+import { ActivityIndicator } from 'react-native';
+import MainLayout from './MainLayout';
 import { ApolloClient, HttpLink, ApolloLink, concat } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -10,6 +12,9 @@ import { USERNAME } from '../gql';
 export default class AddApollo extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      checkedUser: false,
+    };
     const { username } = props.authData;
     const token = props.authData.signInUserSession.accessToken.jwtToken;
     const link = new HttpLink({
@@ -78,8 +83,9 @@ export default class AddApollo extends React.Component {
           username: this.props.authData.username,
         },
       });
+      this.setState({ checkedUser: true });
     } catch (err) {
-      console.log(err);
+      this.setState({ checkedUser: true });
       // this catches an error, which will occur in all cases except when
       // the user is a new user to the database, in which case the new user
       // gets created. This avoids a second server request.
@@ -87,10 +93,14 @@ export default class AddApollo extends React.Component {
   }
 
   render() {
-    return (
+    return this.state.checkedUser ? (
       <ApolloProvider client={this.client}>
         {this.props.children}
       </ApolloProvider>
+    ) : (
+      <MainLayout>
+        <ActivityIndicator />
+      </MainLayout>
     );
   }
 }

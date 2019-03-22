@@ -2,13 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Platform, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { AppContext } from '../App';
+import AppContext from './Context';
 import theme from '../theme';
 
 export default class Header extends React.Component {
   render() {
-    // const { authState } = this.props
-    // const signedIn = (authState === 'signedIn')
     return (
       <View style={styles.container}>
         <Text style={styles.heading}>Deeds</Text>

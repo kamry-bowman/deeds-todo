@@ -1,6 +1,7 @@
 import React from 'react';
 import { Font, AppLoading, Constants } from 'expo';
 import Amplify, { Auth } from 'aws-amplify';
+import AppContext from './components/Context';
 import MainNavigator from './components/MainNavigator';
 import AddApollo from './components/AddApollo';
 import { Authenticator } from 'aws-amplify-react-native';
@@ -20,9 +21,7 @@ Amplify.configure({
   },
 });
 
-const AppContext = React.createContext({ signOut: () => {} });
-
-class App extends React.Component {
+export default class App extends React.Component {
   state = {
     assetsLoaded: false,
     authState: null,
@@ -73,5 +72,3 @@ class App extends React.Component {
     );
   }
 }
-
-export { App as default, AppContext };
