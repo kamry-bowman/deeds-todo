@@ -8,11 +8,7 @@ import { Authenticator } from 'aws-amplify-react-native';
 import { awsCustom } from './theme';
 import { userPoolId, region, userPoolWebClientId } from 'react-native-dotenv';
 
-GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
-
-// if (!Constants.manifest || Constants.manifest.releaseChannel !== 'prod') {
-// code for debugging network requests
-// }
+// GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest; /*debugging line*/
 
 Amplify.configure({
   Auth: {

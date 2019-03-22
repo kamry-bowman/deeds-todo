@@ -6,7 +6,6 @@ import { ApolloClient, HttpLink, ApolloLink, concat } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { GQL_ENDPOINT } from 'react-native-dotenv';
-import { Constants } from 'expo';
 import { USERNAME } from '../gql';
 
 export default class AddApollo extends React.Component {
