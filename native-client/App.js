@@ -1,5 +1,5 @@
 import React from 'react';
-import { Font, AppLoading } from 'expo';
+import { Font, AppLoading, Constants } from 'expo';
 import Amplify, { Auth } from 'aws-amplify';
 import MainNavigator from './components/MainNavigator';
 import AddApollo from './components/AddApollo';
@@ -7,7 +7,10 @@ import { Authenticator } from 'aws-amplify-react-native';
 import { awsCustom } from './theme';
 import { userPoolId, region, userPoolWebClientId } from 'react-native-dotenv';
 
-GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest; // code for debugging network requests
+if (Constants.manifest.releaseChannel !== 'prod') {
+  GLOBAL.XMLHttpRequest =
+    GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest; // code for debugging network requests
+}
 
 Amplify.configure({
   Auth: {

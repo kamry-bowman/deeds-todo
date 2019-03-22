@@ -4,15 +4,19 @@ import { ApolloClient, HttpLink, ApolloLink, concat } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { GQL_ENDPOINT } from 'react-native-dotenv';
+import { Constants } from 'expo';
 import { USERNAME } from '../gql';
 
 export default class AddApollo extends React.Component {
   constructor(props) {
     super(props);
-    const { username } = this.props.authData;
-    const token = this.props.authData.signInUserSession.accessToken.jwtToken;
+    const { username } = props.authData;
+    const token = props.authData.signInUserSession.accessToken.jwtToken;
     const link = new HttpLink({
-      uri: GQL_ENDPOINT /*.replace('localhost', '10.0.2.2')*/,
+      uri:
+        Constants.manifest.releaseChannel === 'prod'
+          ? GQL_ENDPOINT
+          : 'http://localhost:4000' /*.replace('localhost', '10.0.2.2')*/,
     });
 
     const authMiddleware = new ApolloLink((operation, forward) => {
@@ -64,14 +68,18 @@ export default class AddApollo extends React.Component {
     try {
       const { data } = await this.client.mutate({
         mutation: gql`
-          mutation {
-            createUser(username: ${username}) {
+          mutation CreateUser($username: String!) {
+            createUser(username: $username) {
               username
             }
           }
         `,
+        variables: {
+          username: this.props.authData.username,
+        },
       });
     } catch (err) {
+      console.log(err);
       // this catches an error, which will occur in all cases except when
       // the user is a new user to the database, in which case the new user
       // gets created. This avoids a second server request.

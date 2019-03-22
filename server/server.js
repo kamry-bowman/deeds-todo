@@ -16,7 +16,7 @@ const server = new GraphQLServer({
       typeDefs: 'server/database/generated/prisma.graphql',
       endpoint,
       secret,
-      debug: false,
+      debug: true,
     }),
   }),
   resolverValidationOptions: {
